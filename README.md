@@ -1,4 +1,4 @@
-# node-api-vue3
+# vue3-student-admin
 
 ## Project setup
 ```

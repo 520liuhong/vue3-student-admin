@@ -65,6 +65,16 @@
       </template>
     </el-dialog>
 
+    <el-pagination
+        :current-page="currentPage"
+        :page-size="pageSize"
+        :page-sizes="[5, 10, 20, 40]"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="tableData.length"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+    />
+
   </div>
 </template>
 
@@ -135,6 +145,8 @@ export default {
     let dialogVisible = ref(false)
     const searchValue = ref('')
     let addStuFormRef = ref(null)
+    const currentPage = ref(1)
+    const pageSize = ref(5)
 
     const collegeList = [
       {
@@ -181,6 +193,12 @@ export default {
         }
       })
     }
+    const handleSizeChange = (val) => {
+      console.log(`${val} items per page`)
+    }
+    const handleCurrentChange = (val) => {
+      console.log(`current page: ${val}`)
+    }
 
     return {
       tableHeader,
@@ -192,10 +210,14 @@ export default {
       searchValue,
       addStuFormRules,
       collegeList,
+      currentPage,
+      pageSize,
       handleClick,
       columnWidth,
       handleClose,
-      confirmAddStu
+      confirmAddStu,
+      handleSizeChange,
+      handleCurrentChange
     }
   }
 }
