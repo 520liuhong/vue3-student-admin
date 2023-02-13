@@ -34,7 +34,7 @@
           label-position="left"
           label-width="80px">
         <el-form-item label="学生姓名" prop="stuName">
-          <el-input v-model="addStuForm.stuName" />
+          <el-input v-model="addStuForm.stuName"/>
         </el-form-item>
         <el-form-item label="学生性别" prop="stuSex">
           <el-radio-group v-model="addStuForm.stuSex">
@@ -43,17 +43,19 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="学生院系" prop="stuCollege">
-          <el-select v-model="addStuForm.stuCollege" placeholder="请选择">
-            <el-option
-                v-for="item in collegeList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-            />
+          <el-select v-model="addStuForm.stuCollege" placeholder="请选择" @change="chooseCollege">
+            <el-option v-for="item in collegeList" :key="item.value" :label="item.label" :value="item.value"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="学生专业" prop="stuSpecialty">
+          <el-select v-model="addStuForm.stuSpecialty" placeholder="请选择">
+            <el-option v-for="item in collegeList" :key="item.value" :label="item.label" :value="item.value"/>
           </el-select>
         </el-form-item>
         <el-form-item label="学生班级" prop="stuClass">
-          <el-input v-model="addStuForm.stuClass" />
+          <el-select v-model="addStuForm.stuClass" placeholder="请选择">
+            <el-option v-for="item in collegeList" :key="item.value" :label="item.label" :value="item.value"/>
+          </el-select>
         </el-form-item>
       </el-form>
 
@@ -75,11 +77,13 @@
         @current-change="handleCurrentChange"
     />
 
+    <el-button @click="register">测试</el-button>
   </div>
 </template>
 
 <script>
-import {reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
+import axios from "axios";
 
 export default {
   name: 'HelloWorld',
@@ -102,6 +106,7 @@ export default {
         "stu_name": "王三男",
         "stu_sex": "男",
         "stu_college": "农学院",
+        "stu_specialty": "园林",
         "stu_class": "园林15（1）班"
       },
       {
@@ -109,6 +114,7 @@ export default {
         "stu_name": "王思楠",
         "stu_sex": "男",
         "stu_college": "工程学院",
+        "stu_specialty": "土木工程",
         "stu_class": "土木15（1）班"
       },
       {
@@ -116,6 +122,7 @@ export default {
         "stu_name": "王沂南",
         "stu_sex": "男",
         "stu_college": "电气与信息学院",
+        "stu_specialty": "计算机科学与技术",
         "stu_class": "计算机15（1）班"
       }
     ]
@@ -124,6 +131,7 @@ export default {
       {prop: 'stu_name', label: '姓名'},
       {prop: 'stu_sex', label: '性别'},
       {prop: 'stu_college', label: '院系'},
+      {prop: 'stu_specialty', label: '专业'},
       {prop: 'stu_class', label: '班级'},
       {prop: 'handel', label: '操作'}
     ]
@@ -132,6 +140,7 @@ export default {
       stuName: '',
       stuSex: '',
       stuCollege: '',
+      stuSpecialty: '',
       stuClass: ''
     })
 
@@ -139,6 +148,7 @@ export default {
       stuName: [{required: true, message: '请输入姓名', trigger: 'blur'}],
       stuSex: [{required: true, message: '请选择性别', trigger: 'change'}],
       stuCollege: [{required: true, message: '请选择院系', trigger: 'change'}],
+      stuSpecialty: [{required: true, message: '请选择专业', trigger: 'change'}],
       stuClass: [{required: true, message: '请选择班级', trigger: 'blur'}]
     })
 
@@ -148,33 +158,37 @@ export default {
     const currentPage = ref(1)
     const pageSize = ref(5)
 
-    const collegeList = [
-      {
-        value: 'Option1',
-        label: '农学院',
-      },
-      {
-        value: 'Option2',
-        label: '工程学院',
-      },
-      {
-        value: 'Option3',
-        label: '电气与信息学院',
-      }
-    ]
+    // 所有学院列表
+    let collegeList = ref([])
+
+    onMounted (() => {
+      initCollegeList()
+    })
 
     // methods
+    const initCollegeList = () => {
+      axios.get('http://localhost:8088/api/getAllCollege').then(res => {
+        console.log('返回所有院系', res.data)
+        const data = res.data.data
+        const list = []
+        if (data && data.length) {
+          data.forEach(item => {
+            list.push({value: item.college_id, label: item.college_name})
+          })
+          collegeList.value = list
+        }
+      })
+    }
+
     const handleClick = (e) => {
       console.log('click', e)
     }
     const columnWidth = (index) => {
-      if (index === 0 || index === 1 || index === 5) {
-        return '200'
-      } else if (index === 2) {
+      if (index === 2) {
         return '100'
       } else if (index === 3) {
-        return '300'
-      } else if (index === 4) {
+        return '230'
+      } else {
         return '200'
       }
     }
@@ -186,6 +200,7 @@ export default {
     const confirmAddStu = () => {
       console.log('查看选择情况', addStuForm)
       addStuFormRef.value.validate((valid) => {
+        console.log('form表单情况', valid)
         if (valid) {
           // 请求接口
         } else {
@@ -198,6 +213,27 @@ export default {
     }
     const handleCurrentChange = (val) => {
       console.log(`current page: ${val}`)
+    }
+
+    const chooseCollege = (index) => {
+      console.log('打印选择项目', index)
+      const id = collegeList.value[index-1].value
+      console.log('打印id', id)
+      axios.post('http://localhost:8088/api/getSpecialtyByCollege', {id: id}).then(res => {
+        console.log('查看返回数据', res.data)
+      })
+    }
+
+    const register = () => {
+      // axios.get('http://localhost:8088/api/getAll').then(res => {
+      //   console.log('查看返回数据', res.data)
+      // })
+      const params = {
+        name: '农学'
+      }
+      axios.post('http://localhost:8088/api/getStuByName', params).then(res => {
+        console.log('查看返回数据', res.data)
+      })
     }
 
     return {
@@ -217,7 +253,9 @@ export default {
       handleClose,
       confirmAddStu,
       handleSizeChange,
-      handleCurrentChange
+      handleCurrentChange,
+      register,
+      chooseCollege
     }
   }
 }
@@ -230,13 +268,16 @@ export default {
   justify-content: space-between;
   margin-bottom: 12px;
 }
+
 .na-header-btn-list-right {
   display: flex;
 }
-.na-header-btn-list .el-button{
+
+.na-header-btn-list .el-button {
   border-radius: 0;
 }
-.na-header-btn-list-right .el-input__wrapper{
+
+.na-header-btn-list-right .el-input__wrapper {
   border-radius: 0 !important;
 }
 </style>
