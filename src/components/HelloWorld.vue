@@ -33,28 +33,28 @@
           :rules="addStuFormRules"
           label-position="left"
           label-width="80px">
-        <el-form-item label="学生姓名" prop="stuName">
-          <el-input v-model="addStuForm.stuName"/>
+        <el-form-item label="学生姓名" prop="name">
+          <el-input v-model="addStuForm.name"/>
         </el-form-item>
-        <el-form-item label="学生性别" prop="stuSex">
-          <el-radio-group v-model="addStuForm.stuSex">
+        <el-form-item label="学生性别" prop="sex">
+          <el-radio-group v-model="addStuForm.sex">
             <el-radio label="0">男</el-radio>
             <el-radio label="1">女</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="学生院系" prop="stuCollege">
-          <el-select v-model="addStuForm.stuCollege" placeholder="请选择" @change="chooseCollege">
-            <el-option v-for="item in collegeList" :key="item.value" :label="item.label" :value="item.value"/>
+        <el-form-item label="学生院系" prop="collegeId">
+          <el-select v-model="addStuForm.collegeId" placeholder="请选择" @change="chooseCollege">
+            <el-option v-for="item in collegeList" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="学生专业" prop="stuSpecialty">
-          <el-select v-model="addStuForm.stuSpecialty" placeholder="请选择">
-            <el-option v-for="item in collegeList" :key="item.value" :label="item.label" :value="item.value"/>
+        <el-form-item label="学生专业" prop="specialtyId">
+          <el-select v-model="addStuForm.specialtyId" placeholder="请选择" @change="chooseClass">
+            <el-option v-for="item in specialtyList" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="学生班级" prop="stuClass">
-          <el-select v-model="addStuForm.stuClass" placeholder="请选择">
-            <el-option v-for="item in collegeList" :key="item.value" :label="item.label" :value="item.value"/>
+        <el-form-item label="学生班级" prop="classId">
+          <el-select v-model="addStuForm.classId" placeholder="请选择">
+            <el-option v-for="item in classList" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
       </el-form>
@@ -84,6 +84,7 @@
 <script>
 import {onMounted, reactive, ref} from "vue";
 import axios from "axios";
+import {ElMessage} from "element-plus";
 
 export default {
   name: 'HelloWorld',
@@ -137,19 +138,19 @@ export default {
     ]
 
     const addStuForm = reactive({
-      stuName: '',
-      stuSex: '',
-      stuCollege: '',
-      stuSpecialty: '',
-      stuClass: ''
+      name: '',
+      sex: '',
+      collegeId: '',
+      specialtyId: '',
+      classId: ''
     })
 
     const addStuFormRules = reactive({
-      stuName: [{required: true, message: '请输入姓名', trigger: 'blur'}],
-      stuSex: [{required: true, message: '请选择性别', trigger: 'change'}],
-      stuCollege: [{required: true, message: '请选择院系', trigger: 'change'}],
-      stuSpecialty: [{required: true, message: '请选择专业', trigger: 'change'}],
-      stuClass: [{required: true, message: '请选择班级', trigger: 'blur'}]
+      name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
+      sex: [{required: true, message: '请选择性别', trigger: 'change'}],
+      collegeId: [{required: true, message: '请选择院系', trigger: 'change'}],
+      specialtyId: [{required: true, message: '请选择专业', trigger: 'change'}],
+      classId: [{required: true, message: '请选择班级', trigger: 'blur'}]
     })
 
     let dialogVisible = ref(false)
@@ -160,6 +161,10 @@ export default {
 
     // 所有学院列表
     let collegeList = ref([])
+    // 所选学院下的专业列表
+    let specialtyList = ref([])
+    // 所选专业下的班级列表
+    let classList = ref([])
 
     onMounted (() => {
       initCollegeList()
@@ -168,14 +173,10 @@ export default {
     // methods
     const initCollegeList = () => {
       axios.get('http://localhost:8088/api/getAllCollege').then(res => {
-        console.log('返回所有院系', res.data)
         const data = res.data.data
-        const list = []
         if (data && data.length) {
-          data.forEach(item => {
-            list.push({value: item.college_id, label: item.college_name})
-          })
-          collegeList.value = list
+          collegeList.value = data
+          console.log('查看学院列表', collegeList.value)
         }
       })
     }
@@ -200,9 +201,16 @@ export default {
     const confirmAddStu = () => {
       console.log('查看选择情况', addStuForm)
       addStuFormRef.value.validate((valid) => {
-        console.log('form表单情况', valid)
         if (valid) {
-          // 请求接口
+          axios.post('http://localhost:8088/api/addStu', addStuForm).then(res => {
+            if (res.data.code === 200) {
+              dialogVisible.value = false
+              ElMessage({
+                message: res.data.msg,
+                type: 'success',
+              })
+            }
+          })
         } else {
           return false
         }
@@ -215,12 +223,25 @@ export default {
       console.log(`current page: ${val}`)
     }
 
-    const chooseCollege = (index) => {
-      console.log('打印选择项目', index)
-      const id = collegeList.value[index-1].value
-      console.log('打印id', id)
+    const chooseCollege = (id) => {
       axios.post('http://localhost:8088/api/getSpecialtyByCollege', {id: id}).then(res => {
-        console.log('查看返回数据', res.data)
+        const data = res.data
+        if (data.code === 200) {
+          if (data.data && data.data.length) {
+            specialtyList.value = data.data
+          }
+        }
+      })
+    }
+
+    const chooseClass = (id) => {
+      axios.post('http://localhost:8088/api/getClassBySpecialty', {id: id}).then(res => {
+        const data = res.data
+        if (data.code === 200) {
+          if (data.data && data.data.length) {
+            classList.value = data.data
+          }
+        }
       })
     }
 
@@ -246,6 +267,8 @@ export default {
       searchValue,
       addStuFormRules,
       collegeList,
+      specialtyList,
+      classList,
       currentPage,
       pageSize,
       handleClick,
@@ -255,7 +278,8 @@ export default {
       handleSizeChange,
       handleCurrentChange,
       register,
-      chooseCollege
+      chooseCollege,
+      chooseClass
     }
   }
 }
