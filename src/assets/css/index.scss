@@ -1,3 +1,6 @@
 .el-menu {
   border-right: 0 !important;
 }
+.el-menu-item-group__title {
+  display: none;
+}

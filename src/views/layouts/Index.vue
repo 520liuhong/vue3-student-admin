@@ -2,10 +2,6 @@
   <div>
     <side-bar></side-bar>
     <div class="vab-main">
-<!--      <div :class="header === 'fixed' ? 'fixed-header' : ''">-->
-<!--        <vab-nav-bar />-->
-<!--        <vab-tabs-bar v-if="tabsBar === 'true' || tabsBar === true" />-->
-<!--      </div>-->
       <nav-bar></nav-bar>
       <tabs-bar></tabs-bar>
       <app-main></app-main>
@@ -20,7 +16,6 @@ import TabsBar from '@/views/layouts/TabsBar/Index'
 import AppMain from '@/views/layouts/AppMain/Index'
 
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
   name: "Layout",
   components: {
     'side-bar': SideBar,

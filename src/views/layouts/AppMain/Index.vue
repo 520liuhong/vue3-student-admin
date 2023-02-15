@@ -1,12 +1,10 @@
 <template>
   <div v-if="routerView" class="app-main-container">
-<!--    <transition mode="out-in" name="fade-transform">-->
-<!--      <keep-alive :include="cachedRoutes" :max="keepAliveMaxNum">-->
-<!--        <router-view :key="key" class="app-main-height"/>-->
-        <router-view class="app-main-height"/>
-    <div class="app-main-height">5678</div>
-<!--      </keep-alive>-->
-<!--    </transition>-->
+    <transition mode="out-in" name="fade-transform">
+      <keep-alive :include="cachedRoutes" :max="keepAliveMaxNum">
+        <router-view :key="path" class="app-main-height"/>
+      </keep-alive>
+    </transition>
     <footer v-show="footerCopyright" class="footer-copyright">
       Copyright
       <vab-icon :icon="['fas', 'copyRight']"></vab-icon>
@@ -17,11 +15,14 @@
 
 <script setup>
 import {ref} from "vue";
+import {useRoute} from "vue-router";
 
 const fullYear = new Date().getFullYear()
-// const keepAliveMaxNum = ref('')
+const cachedRoutes = ref(['Index', 'Table'])
+const keepAliveMaxNum = ref(99)
 const routerView = ref(true)
 const footerCopyright = ref(true)
+const path = useRoute().path
 
 </script>
 <script>

@@ -1,63 +1,51 @@
 <template>
   <el-scrollbar class="side-bar-container">
     <el-menu
+        router
         active-text-color="#ffd04b"
         background-color="#21252b"
-        default-active="2"
+        :default-openeds="routes"
         text-color="#fff"
-        @open="handleOpen"
-        @close="handleClose"
         mode="vertical"
     >
-      <el-sub-menu index="1">
-        <template #title>
-          <!--            <el-icon><location/></el-icon>-->
-          <span>Navigator One</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="1-1">item one</el-menu-item>
-          <el-menu-item index="1-2">item two</el-menu-item>
-        </el-menu-item-group>
-        <el-sub-menu index="1-4">
-          <template #title>item four</template>
-          <el-menu-item index="1-4-1">item one</el-menu-item>
+      <div v-for="(item,index) in routes" :key="index" :index="index+''">
+        <el-sub-menu v-if="item.meta">
+          <template v-slot:title>{{ item.meta.title }}</template>
+          <el-menu-item
+              v-for="(item2,index2) in item.children"
+              :key="index2"
+              :index="item2.path">
+            {{ item2.meta.title }}
+          </el-menu-item>
         </el-sub-menu>
-      </el-sub-menu>
-      <el-menu-item index="2">
-        <!--          <el-icon><icon-menu/></el-icon>-->
-        <span>Navigator Two</span>
-      </el-menu-item>
+      </div>
     </el-menu>
   </el-scrollbar>
 </template>
 
+<script setup>
+import router from "@/router";
+import {useRoute} from "vue-router";
+
+const routes = router.options.routes
+const path = useRoute().path
+console.log('打印路由', routes, path)
+
+</script>
 <script>
 export default {
-  name: "SideBar",
-  setup() {
-    const handleOpen = (key, keyPath) => {
-      console.log(key, keyPath)
-    }
-    const handleClose = (key, keyPath) => {
-      console.log(key, keyPath)
-    }
-
-    return {
-      handleOpen,
-      handleClose
-    }
-  }
+  name: "SideBar"
 }
 </script>
 
-<style scoped>
+<style>
 .side-bar-container {
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   z-index: 999;
-  width: 256px;
+  width: 200px;
   height: 100vh;
   overflow: hidden;
   background: #21252b;

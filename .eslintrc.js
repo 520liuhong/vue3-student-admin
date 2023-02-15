@@ -17,6 +17,7 @@ module.exports = {
     'vue/no-parsing-error': 0, // 关闭此项避免在{{}}中使用>、<号导致报错的问题
     'no-useless-escape': 0,
     'no-eval': 0,
+    'vue/multi-word-component-names': 'off',
     'no-trailing-spaces': 0
   }
 }
