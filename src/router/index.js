@@ -37,7 +37,7 @@ const routes = [
           {
             path: '/student1',
             name: 'Student1',
-            meta: { title: '学生1' },
+            meta: { title: '学生信息管理' },
             component: () => import('../views/student/student1/Student1'),
           },
           {
