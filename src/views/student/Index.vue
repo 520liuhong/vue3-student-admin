@@ -1,6 +1,6 @@
 <template>
   <div>
-    学生首页
+    <router-view></router-view>
   </div>
 </template>
 

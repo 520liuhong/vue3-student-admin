@@ -1,10 +1,12 @@
 <template>
-  <router-view></router-view>
+  <div>
+    教师测试页
+  </div>
 </template>
 
 <script>
 export default {
-  name: "Teacher"
+  name: "teacher1"
 }
 </script>
 
