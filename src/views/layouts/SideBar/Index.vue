@@ -1,55 +1,80 @@
 <template>
-  <el-scrollbar class="side-bar-container">
+  <div>
     <el-menu
+        class="side-bar-container"
         router
         active-text-color="#ffd04b"
         background-color="#21252b"
         :default-openeds="routes"
+        :default-active="path"
+        :collapse="isCollapse"
+        unique-opened
         text-color="#fff"
         mode="vertical"
     >
-      <div v-for="(item,index) in routes" :key="index" :index="index+''">
-        <el-sub-menu v-if="item.meta">
-          <template v-slot:title>{{ item.meta.title }}</template>
-          <el-menu-item
-              v-for="(item2,index2) in item.children"
-              :key="index2"
-              :index="item2.path">
-            {{ item2.meta.title }}
+      <div class="logo-title">
+        <span>图</span>
+        <span v-show="!isCollapse">学生管理系统</span>
+      </div>
+      <div v-for="(item, index) in routes" :index="index+''" :key="index">
+        <div v-for="item2 in item.children" :key="item2.path">
+          <el-sub-menu v-if="item2.children" :index="item2.path">
+            <template v-slot:title>
+              <span>图</span>
+              <span v-show="!isCollapse">{{ item2.meta.title }}</span>
+            </template>
+            <el-menu-item v-for="item3 in item2.children" :index="item3.path" :key="item3.path">
+              {{ item3.meta.title }}
+            </el-menu-item>
+          </el-sub-menu>
+          <!--首页-->
+          <el-menu-item v-else :index="item2.path">
+            <span>图</span>
+            <span v-show="!isCollapse">{{ item2.meta.title }}</span>
           </el-menu-item>
-        </el-sub-menu>
+        </div>
       </div>
     </el-menu>
-  </el-scrollbar>
+  </div>
 </template>
 
 <script setup>
 import router from "@/router";
 import {useRoute} from "vue-router";
+import {useStore} from "vuex";
+import {ref, watch} from "vue";
+
+const store = useStore()
 
 const routes = router.options.routes
 const path = useRoute().path
-console.log('打印路由', routes, path)
+let isCollapse = ref(store.state.isCollapse)
 
+watch(() => store.state.isCollapse, (newVal) => {
+  isCollapse.value = store.state.isCollapse
+})
 </script>
+
 <script>
 export default {
   name: "SideBar"
 }
 </script>
 
-<style>
+<style scoped>
 .side-bar-container {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
   z-index: 999;
-  width: 200px;
   height: 100vh;
   overflow: hidden;
   background: #21252b;
-  box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
-  transition: width 0.3s;
+}
+
+.logo-title {
+  height: 56px;
+  line-height: 56px;
+  margin-left: 20px;
+  color: #fff;
+  font-size: 22px;
+  overflow: hidden;
 }
 </style>

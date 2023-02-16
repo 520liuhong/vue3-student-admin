@@ -18,6 +18,7 @@ module.exports = {
     'no-useless-escape': 0,
     'no-eval': 0,
     'vue/multi-word-component-names': 'off',
-    'no-trailing-spaces': 0
+    'no-trailing-spaces': 0,
+    'no-unused-vars': 'off'
   }
 }
