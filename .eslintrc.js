@@ -5,8 +5,8 @@ module.exports = {
     "vue/setup-compiler-macros": true
   },
   'extends': [
-    'plugin:vue/vue3-essential',
-    'eslint:recommended'
+    'eslint:recommended',
+    'plugin:vue/vue3-essential'
   ],
   parserOptions: {
     ecmaVersion: 12,
