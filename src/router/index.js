@@ -35,16 +35,16 @@ const routes = [
         component: () => import('../views/student/Index'),
         children: [
           {
-            path: '/student1',
+            path: '/studentManage',
             name: 'Student1',
             meta: { title: '学生信息管理' },
-            component: () => import('../views/student/student1/Student1'),
+            component: () => import('../views/student/studentManage/StudentInfo'),
           },
           {
             path: '/student2',
             name: 'Student2',
             meta: { title: '学生2' },
-            component: () => import('../views/student/student1/Student2')
+            component: () => import('../views/student/studentManage/Student2')
           }
         ]
       },

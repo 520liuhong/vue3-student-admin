@@ -37,8 +37,8 @@ const visitedRoutes = ref([
     }
   },
   {
-    "fullPath": "/student1",
-    "path": "/student1",
+    "fullPath": "/studentManage",
+    "path": "/studentManage",
     "name": "student1",
     "meta": {
       "title": "student1",
