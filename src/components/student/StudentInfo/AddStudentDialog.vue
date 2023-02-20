@@ -51,8 +51,9 @@
 
 <script setup>
 import {reactive, ref, onMounted, watchEffect} from "vue";
-import axios from "axios";
 import {ElMessage} from "element-plus";
+import {get,post} from "@/http/http";
+import {api} from "@/http/api";
 // 声明props
 const props = defineProps({
   dialogVisible: {
@@ -99,24 +100,23 @@ onMounted(() => {
  * 初始化学院列表
  */
 const initCollegeList = () => {
-  axios.get('http://localhost:8088/api/getAllCollege').then(res => {
-    const data = res.data.data
+  get(api.getAllCollege).then(res => {
+    const data = res.data
     if (data && data.length) {
       collegeList.value = data
     }
   })
 }
-
 /**
  * 根据学院选择专业
  * @param id
  */
 const chooseCollege = (id) => {
-  axios.post('http://localhost:8088/api/getSpecialtyByCollege', {id: id}).then(res => {
+  post(api.getSpecialtyByCollege, {id: id}).then(res => {
     const data = res.data
-    if (data.code === 200) {
-      if (data.data && data.data.length) {
-        specialtyList.value = data.data
+    if (res.code === 200) {
+      if (data && data.length) {
+        specialtyList.value = data
       }
     }
   })
@@ -126,11 +126,11 @@ const chooseCollege = (id) => {
  * @param id
  */
 const chooseClass = (id) => {
-  axios.post('http://localhost:8088/api/getClassBySpecialty', {id: id}).then(res => {
+  post(api.getClassBySpecialty, {id: id}).then(res => {
     const data = res.data
-    if (data.code === 200) {
-      if (data.data && data.data.length) {
-        classList.value = data.data
+    if (res.code === 200) {
+      if (data && data.length) {
+        classList.value = data
       }
     }
   })
@@ -140,18 +140,17 @@ const chooseClass = (id) => {
  * 弹窗点击确定
  */
 const confirmAddStu = () => {
-  console.log('查看选择情况', addStuForm)
   addStuFormRef.value.validate((valid) => {
     if (valid) {
-      axios.post('http://localhost:8088/api/addStu', addStuForm).then(res => {
-        if (res.data.code === 200) {
+      post(api.addStu, addStuForm).then(res => {
+        if (res.code === 200) {
           // 关闭弹窗
           closelDialog()
           // 重置弹窗信息
           addStuForm.value = {name: '', sex: '', collegeId: '', specialtyId: '', classId: ''}
 
           ElMessage({
-            message: res.data.msg,
+            message: res.msg,
             type: 'success',
           })
         }

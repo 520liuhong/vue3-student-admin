@@ -50,8 +50,9 @@
 
 <script setup>
 import {onMounted, reactive, ref} from "vue";
-import axios from "axios";
 import AddStudentDialog from "@/components/student/StudentInfo/AddStudentDialog";
+import {get, post} from "@/http/http";
+import {api} from "@/http/api";
 
 // data
 // 表头样式
@@ -96,8 +97,8 @@ onMounted(() => {
  * 获取表格数据
  */
 const initCollegeList = () => {
-  axios.get('http://localhost:8088/api/getAllStu').then(res => {
-    const data = res.data.data
+  get(api.getAllStu).then(res => {
+    const data = res.data
     if (data && data.length) {
       tableData.value = data
     }
@@ -136,8 +137,8 @@ const register = () => {
   const params = {
     name: '农学'
   }
-  axios.post('http://localhost:8088/api/getStuByName', params).then(res => {
-    console.log('查看返回数据', res.data)
+  post(api.getStuByName, params).then(res => {
+    console.log('查看返回数据', res)
   })
 }
 
