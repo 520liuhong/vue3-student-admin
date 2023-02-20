@@ -18,42 +18,27 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {useRouter, useRoute} from "vue-router";
+import store from "@/store";
 
 const router = useRouter()
 const route = useRoute()
 
 const tabActive = ref('')
-const visitedRoutes = ref([
-  {
-    "fullPath": "/index",
-    "path": "/index",
-    "name": "Index",
-    "meta": {
-      "title": "首页",
-      "icon": "home",
-      "affix": true
-    }
-  },
-  {
-    "fullPath": "/studentManage",
-    "path": "/studentManage",
-    "name": "student1",
-    "meta": {
-      "title": "student1",
-      "icon": "home",
-      "affix": true
-    }
-  }
-])
+const visitedRoutes = ref([])
+visitedRoutes.value = store.getters.getNavTabs
+
+watch(() => store.getters.getNavTabs, (newVal) => {
+  console.log('监听', newVal)
+  visitedRoutes.value = newVal
+})
 
 const handleTabClick = (tab) => {
-  console.log('点击', tab)
   const item = visitedRoutes.value.filter((item, index) => {
     if (parseInt(tab.index) === index) return item
   })[0]
-  console.log('线上', item)
+
   if (route.path !== item.path) {
     router.push({
       path: item.path,

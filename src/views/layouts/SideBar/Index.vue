@@ -11,6 +11,7 @@
         unique-opened
         text-color="#fff"
         mode="vertical"
+        @select="selectPath"
     >
       <div class="logo-title">
         <span>图</span>
@@ -23,7 +24,8 @@
               <span>图</span>
               <span v-show="!isCollapse">{{ item2.meta.title }}</span>
             </template>
-            <el-menu-item v-for="item3 in item2.children" :index="item3.path" :key="item3.path">
+            <el-menu-item v-for="item3 in item2.children" :index="item3.path" :key="item3.path"
+                          @click="clickPath(item3)">
               {{ item3.meta.title }}
             </el-menu-item>
           </el-sub-menu>
@@ -45,14 +47,33 @@ import {useStore} from "vuex";
 import {ref, watch} from "vue";
 
 const store = useStore()
+const clickItem = ref({})
 
 const routes = router.options.routes
 const path = useRoute().path
 let isCollapse = ref(store.state.isCollapse)
 
-watch(() => store.state.isCollapse, (newVal) => {
-  isCollapse.value = store.state.isCollapse
+watch(() => store.state.isCollapse, (newval) => {
+  isCollapse.value = newval
 })
+
+/**
+ * 菜单栏点击菜单时，往顶部navTabs添加路由
+ * @param e
+ */
+const selectPath = (e) => {
+  setTimeout(() => {
+    const list = store.getters.getNavTabs
+    const item = list.find(item => item.path === e)
+    if (!item && clickItem.value.path === e) {
+      list.push({path: clickItem.value.path, meta: clickItem.value.meta})
+      store.commit('setNavTabs', list)
+    }
+  }, 100)
+}
+const clickPath = (e) => {
+  clickItem.value = e
+}
 </script>
 
 <script>
