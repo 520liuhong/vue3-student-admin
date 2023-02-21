@@ -3,6 +3,7 @@
     <el-tabs
         v-model="tabActive"
         type="card"
+        editable
         class="tabs-content"
         @tab-click="handleTabClick"
         @tab-remove="handleTabRemove"
@@ -18,20 +19,27 @@
 </template>
 
 <script setup>
-import {ref, watch} from "vue";
+import {ref, watchEffect} from "vue";
 import {useRouter, useRoute} from "vue-router";
 import store from "@/store";
 
 const router = useRouter()
 const route = useRoute()
 
-const tabActive = ref('')
+let tabActive = ref('')
 const visitedRoutes = ref([])
 visitedRoutes.value = store.getters.getNavTabs
 
-watch(() => store.getters.getNavTabs, (newVal) => {
-  console.log('监听', newVal)
-  visitedRoutes.value = newVal
+const obj = visitedRoutes.value.find(item => item.path === route.path)
+if (obj) {
+  tabActive.value = obj.path
+} else {
+  visitedRoutes.value.push({path: route.path, meta: route.meta})
+  tabActive.value = route.path
+}
+
+watchEffect(()=>{
+  tabActive.value = route.path
 })
 
 const handleTabClick = (tab) => {
@@ -63,10 +71,12 @@ export default {
 <style lang="scss" scoped>
 .nav-tab {
   height: 60px;
+  line-height: 60px;
   padding: 0 20px;
   background: #ffffff;
   border-bottom: 1px #eeeeee solid;
 }
+
 .tabs-content {
   width: calc(100% - 90px);
   height: 34px;

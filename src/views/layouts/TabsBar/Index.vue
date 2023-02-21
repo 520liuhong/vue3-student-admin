@@ -28,8 +28,10 @@ export default {
 
 <style scoped>
 .top-tabs-bar {
-  height: 55px;
+  height: 60px;
+  line-height: 60px;
   padding: 0 20px;
   background: #ffffff;
+  border-bottom: 1px #eeeeee solid;
 }
 </style>

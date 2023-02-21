@@ -32,7 +32,7 @@ export default {
   .app-main-height {
     padding: 20px;
     min-height: calc(
-        100vh - 60px - 55px - 20px -
+        100vh - 60px - 60px - 20px -
         20px - 55px - 55px
     );
     background: #fff;
