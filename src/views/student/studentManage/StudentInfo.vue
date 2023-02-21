@@ -20,8 +20,8 @@
               <span v-else>{{ scope.row[item.prop] }}</span>
             </div>
             <div v-else style="padding-left: 10px;text-align: center">
-              <el-button color="#f00" @click="handleClick(scope.row)">删除</el-button>
-              <el-button type="primary" @click="handleClick(scope.row)">修改</el-button>
+              <el-button link type="primary" @click="handleClick(scope.row)">删除</el-button>
+              <el-button link type="primary" @click="handleClick(scope.row)">修改</el-button>
             </div>
           </template>
         </el-table-column>
@@ -60,8 +60,6 @@ const tableHeader = {
   height: '50px',
   lineHeight: '50px',
   fontSize: '16px',
-  color: '#fff',
-  backgroundColor: '#409eff',
   paddingLeft: '10px'
 }
 
@@ -143,17 +141,13 @@ const register = () => {
 }
 
 const getSex = (e) => {
-  let sex = '男'
-  if (e === 1) {
-    sex = '女'
-  }
-  return sex
+  return (e === 1 || e === '1') ? '女' : '男'
 }
 
 </script>
 <script>
 export default {
-  name: 'Student1'
+  name: 'StudentInfo'
 }
 </script>
 
@@ -175,5 +169,10 @@ export default {
 
 .na-header-btn-list-right .el-input__wrapper {
   border-radius: 0 !important;
+}
+
+:deep .el-table__header-wrapper {
+  //border-top: 1px #eae8e8 solid;
+  //border-bottom: 1px #eae8e8 solid;
 }
 </style>
