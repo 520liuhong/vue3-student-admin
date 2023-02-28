@@ -18,7 +18,7 @@ const routes = [
         path: '/index',
         name: 'Index',
         component: () => import('@/views/Index'),
-        meta: { title: '首页', icon: 'home', affix: true },
+        meta: { title: '首页', icon: 'iconfont icon-home', affix: true },
         // children: [
         //   {
         //     path: '/index',
@@ -31,7 +31,7 @@ const routes = [
       {
         path: '/student',
         name: 'Student',
-        meta: { title: '学生管理', icon: 'box-open' },
+        meta: { title: '学生管理', icon: 'iconfont icon-student' },
         component: () => import('../views/student/Index'),
         children: [
           {
@@ -51,7 +51,7 @@ const routes = [
       {
         path: '/teacher',
         name: 'Teacher',
-        meta: { title: '教师管理', icon: 'box-open' },
+        meta: { title: '教师管理', icon: 'iconfont icon-teacher' },
         component: () => import('../views/teacher/Index'),
         children: [
           {

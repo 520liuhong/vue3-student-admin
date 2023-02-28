@@ -1,0 +1,37 @@
+{
+  "id": "3922397",
+  "name": "student-admin",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "学生管理平台",
+  "glyphs": [
+    {
+      "icon_id": "7712204",
+      "name": "教师",
+      "font_class": "teacher",
+      "unicode": "e722",
+      "unicode_decimal": 59170
+    },
+    {
+      "icon_id": "7898688",
+      "name": "管理员",
+      "font_class": "admin",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "21521851",
+      "name": "首页",
+      "font_class": "home",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
+      "icon_id": "31953527",
+      "name": "icon_学生分组配置",
+      "font_class": "student",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    }
+  ]
+}
