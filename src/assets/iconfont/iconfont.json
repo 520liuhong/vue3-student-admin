@@ -6,6 +6,20 @@
   "description": "学生管理平台",
   "glyphs": [
     {
+      "icon_id": "1304886",
+      "name": "收起菜单",
+      "font_class": "closesidebar",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "1304894",
+      "name": "展开菜单",
+      "font_class": "opensidebar",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
       "icon_id": "7712204",
       "name": "教师",
       "font_class": "teacher",

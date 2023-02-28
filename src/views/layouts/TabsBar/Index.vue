@@ -1,9 +1,9 @@
 <template>
   <div class="top-tabs-bar">
-    <el-radio-group v-model="isCollapse" @change="changeBtn" style="margin-bottom: 20px">
-      <el-radio-button :label="false">展开</el-radio-button>
-      <el-radio-button :label="true">关闭</el-radio-button>
-    </el-radio-group>
+    <div>
+      <i v-show="closeSideBar" @click="changeSideBar" class="iconfont icon-closesidebar icons-size"></i>
+      <i v-show="!closeSideBar" @click="changeSideBar" class="iconfont icon-opensidebar icons-size"></i>
+    </div>
   </div>
 </template>
 
@@ -13,11 +13,14 @@ import {useStore} from "vuex";
 const store = useStore()
 
 const isCollapse = ref(true)
+let closeSideBar = ref(true)
 
-const changeBtn = () => {
+const changeSideBar = () => {
   console.log('状态', isCollapse.value)
-  store.commit('setCollapse', isCollapse.value)
+  store.commit('setCollapse', closeSideBar.value)
+  closeSideBar.value = !closeSideBar.value
 }
+
 </script>
 
 <script>
@@ -33,5 +36,9 @@ export default {
   padding: 0 20px;
   background: #ffffff;
   border-bottom: 1px #eeeeee solid;
+}
+.icons-size {
+  cursor: pointer;
+  font-size: 24px
 }
 </style>
