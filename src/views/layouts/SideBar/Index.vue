@@ -6,7 +6,7 @@
         active-text-color="#ffd04b"
         background-color="#21252b"
         :default-openeds="routes"
-        :default-active="path"
+        :default-active="activeMenu"
         :collapse="isCollapse"
         unique-opened
         text-color="#fff"
@@ -21,7 +21,7 @@
         <div v-for="item2 in item.children" :key="item2.path">
           <el-sub-menu v-if="item2.children" :index="item2.path">
             <template v-slot:title>
-              <span>图</span>
+              <i :class="item2.meta.icon"></i>
               <span v-show="!isCollapse">{{ item2.meta.title }}</span>
             </template>
             <el-menu-item v-for="item3 in item2.children" :index="item3.path" :key="item3.path"
@@ -31,7 +31,7 @@
           </el-sub-menu>
           <!--首页-->
           <el-menu-item v-else :index="item2.path">
-            <span>图</span>
+            <i :class="item2.meta.icon"></i>
             <span v-show="!isCollapse">{{ item2.meta.title }}</span>
           </el-menu-item>
         </div>
@@ -44,17 +44,25 @@
 import router from "@/router";
 import {useRoute} from "vue-router";
 import {useStore} from "vuex";
-import {ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
 
 const store = useStore()
+const route = useRoute()
 const clickItem = ref({})
 
 const routes = router.options.routes
-const path = useRoute().path
 let isCollapse = ref(store.state.isCollapse)
 
-watch(() => store.state.isCollapse, (newval) => {
-  isCollapse.value = newval
+watch(() => store.state.isCollapse, (newVal) => {
+  isCollapse.value = newVal
+})
+
+const activeMenu = computed(() => {
+  const {meta, path} = route
+  if (meta.activeMenu) {
+    return meta.activeMenu
+  }
+  return path
 })
 
 /**

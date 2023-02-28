@@ -3,7 +3,7 @@
     <el-tabs
         v-model="tabActive"
         type="card"
-        editable
+        closable
         class="tabs-content"
         @tab-click="handleTabClick"
         @tab-remove="handleTabRemove"
@@ -43,9 +43,7 @@ watchEffect(()=>{
 })
 
 const handleTabClick = (tab) => {
-  const item = visitedRoutes.value.filter((item, index) => {
-    if (parseInt(tab.index) === index) return item
-  })[0]
+  const item = visitedRoutes.value.find((item, index) => parseInt(tab.index) === index)
 
   if (route.path !== item.path) {
     router.push({
