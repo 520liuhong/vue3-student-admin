@@ -26,10 +26,11 @@ import store from "@/store";
 const router = useRouter()
 const route = useRoute()
 
-let tabActive = ref('')
-const visitedRoutes = ref([])
+let tabActive = ref('') // 当前点击的tab
+const visitedRoutes = ref([]) // 导航tabs列表
 visitedRoutes.value = store.getters.getNavTabs
 
+// 初始化，当前路由在tabs列表中，则显示该路由，否则往tabs列表中添加当前路由
 const obj = visitedRoutes.value.find(item => item.path === route.path)
 if (obj) {
   tabActive.value = obj.path
@@ -42,6 +43,11 @@ watchEffect(()=>{
   tabActive.value = route.path
 })
 
+/**
+ * 点击tabs，界面跳转
+ * @param tab
+ * @returns {boolean}
+ */
 const handleTabClick = (tab) => {
   const item = visitedRoutes.value.find((item, index) => parseInt(tab.index) === index)
 
@@ -55,8 +61,27 @@ const handleTabClick = (tab) => {
     return false
   }
 }
-const handleTabRemove = () => {
-  console.log('删除')
+/**
+ * 删除tabs
+ * @param path
+ */
+const handleTabRemove = (path) => {
+  let key = -1
+  visitedRoutes.value.forEach((item, index) => {
+    if (item.path === path) {
+      key = index
+    }
+  })
+  if (key > -1) {
+    visitedRoutes.value.splice(key, 1)
+    // 如果key为0，则路由向后跳转，否则向前跳转
+
+    // router.push({
+    //   path: item.path,
+    //   query: item.query,
+    //   fullPath: item.fullPath,
+    // })
+  }
 }
 </script>
 

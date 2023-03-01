@@ -157,6 +157,8 @@ const logout = () => {
     type: 'warning',
   }).then(() => {
     router.push({path: '/'})
+    // 导航栏置为首页
+    store.commit('setNavTabs', [{path: "/index", meta: {title:'首页'}}])
   }).catch(() => {
 
   })
