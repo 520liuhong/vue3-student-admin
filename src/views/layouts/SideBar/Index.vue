@@ -21,7 +21,7 @@
         <div v-for="item2 in item.children" :key="item2.path">
           <el-sub-menu v-if="item2.children" :index="item2.path">
             <template v-slot:title>
-              <i :class="item2.meta.icon"></i>
+              <i :class="item2.meta.icon" style="margin-right: 6px"></i>
               <span v-show="!isCollapse">{{ item2.meta.title }}</span>
             </template>
             <el-menu-item v-for="item3 in item2.children" :index="item3.path" :key="item3.path"
@@ -31,7 +31,7 @@
           </el-sub-menu>
           <!--首页-->
           <el-menu-item v-else :index="item2.path">
-            <i :class="item2.meta.icon"></i>
+            <i :class="item2.meta.icon" style="margin-right: 6px"></i>
             <span v-show="!isCollapse">{{ item2.meta.title }}</span>
           </el-menu-item>
         </div>

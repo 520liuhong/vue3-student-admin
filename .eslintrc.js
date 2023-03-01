@@ -24,5 +24,10 @@ module.exports = {
     'no-trailing-spaces': 0,
     'vue/multi-word-component-names': 'off',
     'no-unused-vars': 'off'
+  },
+  globals: {
+    "ElMessage": "readonly",
+    "ElMessageBox": "readonly",
+    "ElLoading": "readonly"
   }
 }
