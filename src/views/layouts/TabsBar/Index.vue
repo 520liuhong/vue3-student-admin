@@ -1,8 +1,8 @@
 <template>
   <div class="top-tabs-bar">
-    <div>
-      <i v-show="closeSideBar" @click="changeSideBar" class="iconfont icon-closesidebar icons-size"></i>
-      <i v-show="!closeSideBar" @click="changeSideBar" class="iconfont icon-opensidebar icons-size"></i>
+    <div class="open-btn-list" @click="changeSideBar">
+      <i v-show="closeSideBar" class="iconfont icon-close-sidebar icons-size"></i>
+      <i v-show="!closeSideBar" class="iconfont icon-open-sidebar icons-size"></i>
     </div>
   </div>
 </template>
@@ -10,13 +10,11 @@
 <script setup>
 import {ref} from "vue";
 import {useStore} from "vuex";
-const store = useStore()
 
-const isCollapse = ref(true)
+const store = useStore()
 let closeSideBar = ref(true)
 
 const changeSideBar = () => {
-  console.log('状态', isCollapse.value)
   store.commit('setCollapse', closeSideBar.value)
   closeSideBar.value = !closeSideBar.value
 }
@@ -29,7 +27,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+$width: 24px;
 .top-tabs-bar {
   height: 60px;
   line-height: 60px;
@@ -37,8 +36,11 @@ export default {
   background: #ffffff;
   border-bottom: 1px #eeeeee solid;
 }
+.open-btn-list {
+  width: $width;
+}
 .icons-size {
   cursor: pointer;
-  font-size: 24px
+  font-size: $width;
 }
 </style>

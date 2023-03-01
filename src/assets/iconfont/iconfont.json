@@ -8,14 +8,14 @@
     {
       "icon_id": "1304886",
       "name": "收起菜单",
-      "font_class": "closesidebar",
+      "font_class": "close-sidebar",
       "unicode": "e622",
       "unicode_decimal": 58914
     },
     {
       "icon_id": "1304894",
       "name": "展开菜单",
-      "font_class": "opensidebar",
+      "font_class": "open-sidebar",
       "unicode": "e624",
       "unicode_decimal": 58916
     },
