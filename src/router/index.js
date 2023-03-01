@@ -18,15 +18,7 @@ const routes = [
         path: '/index',
         name: 'Index',
         component: () => import('@/views/Index'),
-        meta: { title: '首页', icon: 'iconfont icon-home', affix: true },
-        // children: [
-        //   {
-        //     path: '/index',
-        //     name: 'Index',
-        //     meta: { title: '首页' },
-        //     component: () => import('@/views/Index')
-        //   }
-        // ]
+        meta: { title: '首页', icon: 'iconfont icon-home', affix: true }
       },
       {
         path: '/student',
@@ -59,6 +51,32 @@ const routes = [
             name: 'Teacher1',
             meta: { title: '教师' },
             component: () => import('../views/teacher/teacher1')
+          }
+        ]
+      },
+      {
+        path: '/admin',
+        name: 'Admin',
+        meta: { title: '管理员', icon: 'iconfont icon-admin' },
+        component: () => import('../views/admin/Index'),
+        children: [
+          {
+            path: '/userManagement',
+            name: 'UserManagement',
+            meta: { title: '用户管理' },
+            component: () => import('../views/admin/User')
+          },
+          {
+            path: '/roleManagement',
+            name: 'RoleManagement',
+            meta: { title: '角色管理' },
+            component: () => import('../views/admin/Role')
+          },
+          {
+            path: '/authorityManagement',
+            name: 'AuthorityManagement',
+            meta: { title: '权限管理' },
+            component: () => import('../views/admin/Authority')
           }
         ]
       }
