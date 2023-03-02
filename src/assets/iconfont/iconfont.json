@@ -6,6 +6,118 @@
   "description": "学生管理平台",
   "glyphs": [
     {
+      "icon_id": "28860754",
+      "name": "预览",
+      "font_class": "preview",
+      "unicode": "e76d",
+      "unicode_decimal": 59245
+    },
+    {
+      "icon_id": "32883668",
+      "name": "报错",
+      "font_class": "baocuo",
+      "unicode": "e7b7",
+      "unicode_decimal": 59319
+    },
+    {
+      "icon_id": "1270",
+      "name": "错误",
+      "font_class": "cuowu",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "2675116",
+      "name": "搜索",
+      "font_class": "sousuo",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "3283216",
+      "name": "角色删除",
+      "font_class": "remove-role",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "10792660",
+      "name": "删除群组多个用户_操作_jurassic",
+      "font_class": "jurassic_delete-users",
+      "unicode": "e6f1",
+      "unicode_decimal": 59121
+    },
+    {
+      "icon_id": "10792661",
+      "name": "删除角色用户_操作_jurassic",
+      "font_class": "jurassic_delete-user",
+      "unicode": "e6f2",
+      "unicode_decimal": 59122
+    },
+    {
+      "icon_id": "11372693",
+      "name": "删除",
+      "font_class": "shanchu",
+      "unicode": "e8b6",
+      "unicode_decimal": 59574
+    },
+    {
+      "icon_id": "15685215",
+      "name": "主题_调色盘",
+      "font_class": "zhuti_tiaosepan",
+      "unicode": "e6d7",
+      "unicode_decimal": 59095
+    },
+    {
+      "icon_id": "30081830",
+      "name": "—",
+      "font_class": "reduce",
+      "unicode": "e77b",
+      "unicode_decimal": 59259
+    },
+    {
+      "icon_id": "30081831",
+      "name": "+",
+      "font_class": "plus",
+      "unicode": "e781",
+      "unicode_decimal": 59265
+    },
+    {
+      "icon_id": "30519586",
+      "name": "right",
+      "font_class": "right",
+      "unicode": "e785",
+      "unicode_decimal": 59269
+    },
+    {
+      "icon_id": "30519589",
+      "name": "up",
+      "font_class": "up",
+      "unicode": "e788",
+      "unicode_decimal": 59272
+    },
+    {
+      "icon_id": "30519590",
+      "name": "left",
+      "font_class": "left",
+      "unicode": "e789",
+      "unicode_decimal": 59273
+    },
+    {
+      "icon_id": "30519592",
+      "name": "refresh",
+      "font_class": "refresh",
+      "unicode": "e78b",
+      "unicode_decimal": 59275
+    },
+    {
+      "icon_id": "577399",
+      "name": "向下2",
+      "font_class": "down",
+      "unicode": "e772",
+      "unicode_decimal": 59250
+    },
+    {
       "icon_id": "1304886",
       "name": "收起菜单",
       "font_class": "close-sidebar",
