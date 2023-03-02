@@ -3,7 +3,6 @@
     <el-tabs
         v-model="tabActive"
         type="card"
-        closable
         class="tabs-content"
         @tab-click="handleTabClick"
         @tab-remove="handleTabRemove"
@@ -11,6 +10,7 @@
       <el-tab-pane
           v-for="item in visitedRoutes"
           :key="item.path"
+          :closable="item.path!=='/index'"
           :label="item.meta.title"
           :name="item.path"
       ></el-tab-pane>
@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import {ref, watchEffect} from "vue";
+import {ref, watch} from "vue";
 import {useRouter, useRoute} from "vue-router";
 import store from "@/store";
 
@@ -29,18 +29,23 @@ const route = useRoute()
 let tabActive = ref('') // 当前点击的tab
 const visitedRoutes = ref([]) // 导航tabs列表
 visitedRoutes.value = store.getters.getNavTabs
-
-// 初始化，当前路由在tabs列表中，则显示该路由，否则往tabs列表中添加当前路由
-const obj = visitedRoutes.value.find(item => item.path === route.path)
-if (obj) {
-  tabActive.value = obj.path
-} else {
-  visitedRoutes.value.push({path: route.path, meta: route.meta})
-  tabActive.value = route.path
+/**
+ * 初始化tabs
+ */
+const initTabs = () => {
+  // 初始化，当前路由在tabs列表中，则显示该路由，否则往tabs列表中添加当前路由
+  const obj = visitedRoutes.value.find(item => item.path === route.path)
+  if (obj) {
+    tabActive.value = obj.path
+  } else {
+    visitedRoutes.value.push({path: route.path, meta: route.meta})
+    tabActive.value = route.path
+  }
 }
+initTabs()
 
-watchEffect(()=>{
-  tabActive.value = route.path
+watch(() => route.path, () => {
+  initTabs()
 })
 
 /**
@@ -68,19 +73,18 @@ const handleTabClick = (tab) => {
 const handleTabRemove = (path) => {
   let key = -1
   visitedRoutes.value.forEach((item, index) => {
-    if (item.path === path) {
-      key = index
-    }
+    if (item.path === path) key = index
   })
   if (key > -1) {
     visitedRoutes.value.splice(key, 1)
-    // 如果key为0，则路由向后跳转，否则向前跳转
+    // 因为首页的tabs不能被删除，所以删除只能向前一个跳转，不能向后跳转
+    const item = visitedRoutes.value[key-1]
 
-    // router.push({
-    //   path: item.path,
-    //   query: item.query,
-    //   fullPath: item.fullPath,
-    // })
+    router.push({
+      path: item.path,
+      query: item.query,
+      fullPath: item.fullPath,
+    })
   }
 }
 </script>
