@@ -18,7 +18,10 @@
     <!--修改信息下拉框-->
     <div class="top-tabs-bar-right">
       <el-dropdown @command="handleCommand">
-        <span>{{ username }}<i class="iconfont icon-down"></i></span>
+        <div>
+          <span class="top-tabs-bar-right-user">{{ username }}</span>
+          <i class="iconfont icon-down"></i>
+        </div>
 
         <template #dropdown>
           <el-dropdown-menu>
@@ -200,8 +203,11 @@ $width: 24px;
   .top-tabs-bar-right {
     display: flex;
     align-items: center;
+    cursor: pointer;
+
+    .top-tabs-bar-right-user {
+      margin-right: 6px;
+    }
   }
 }
-
-
 </style>

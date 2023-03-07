@@ -20,8 +20,8 @@
               <span v-else>{{ scope.row[item.prop] }}</span>
             </div>
             <div v-else style="padding-left: 10px;text-align: center">
-              <el-button link type="primary" @click="handleClick(scope.row)">删除</el-button>
-              <el-button link type="primary" @click="handleClick(scope.row)">修改</el-button>
+              <el-button link type="primary" @click="delStu(scope.row)">删除</el-button>
+              <el-button link type="primary" @click="editStu(scope.row)">修改</el-button>
             </div>
           </template>
         </el-table-column>
@@ -51,7 +51,7 @@
 <script setup>
 import {onMounted, reactive, ref} from "vue";
 import AddStudentDialog from "@/components/student/StudentInfo/AddStudentDialog";
-import {get, post} from "@/http/http";
+import {post} from "@/http/http";
 import {api} from "@/http/api";
 
 // data
@@ -69,12 +69,12 @@ const tableData = ref([])
 let dialogVisible = ref(false)
 
 const options = reactive([
-  {prop: 'stu_id', label: '学号'},
-  {prop: 'stu_name', label: '姓名'},
-  {prop: 'stu_sex', label: '性别'},
-  {prop: 'college_name', label: '院系'},
-  {prop: 'specialty_name', label: '专业'},
-  {prop: 'class_name', label: '班级'},
+  {prop: 'id', label: '学号'},
+  {prop: 'name', label: '姓名'},
+  {prop: 'sex', label: '性别'},
+  {prop: 'college', label: '院系'},
+  {prop: 'specialty', label: '专业'},
+  {prop: 'class', label: '班级'},
   {prop: 'handel', label: '操作'}
 ])
 
@@ -95,7 +95,11 @@ onMounted(() => {
  * 获取表格数据
  */
 const initCollegeList = () => {
-  get(api.getAllStu).then(res => {
+  const param = {
+    pageNo: currentPage.value,
+    pageSize: 10
+  }
+  post(api.getStuInfo, param).then(res => {
     const data = res.data
     if (data && data.length) {
       tableData.value = data
@@ -111,7 +115,20 @@ function closeDialog(e) {
   dialogVisible.value = e.value
 }
 
-const handleClick = (e) => {
+/**
+ * 单个删除学生
+ * @param e
+ */
+const delStu = (e) => {
+  post(api.delStu, {id: e.id}).then(res => {
+    if (res.code === 200) {
+      initCollegeList()
+    } else {
+      // 提示删除失败
+    }
+  })
+}
+const editStu = (e) => {
   console.log('click----', e)
 }
 const columnWidth = (index) => {

@@ -5,11 +5,12 @@
  */
 
 export const api = {
-    getAllStu: '/api/getAllStu',
+    getStuInfo: '/api/getStuInfo',
     getSpecialtyByCollege: '/api/getSpecialtyByCollege',
     getClassBySpecialty: '/api/getClassBySpecialty',
     getAllCollege: '/api/getAllCollege',
     addStu: '/api/addStu',
     getStuByName: '/api/getStuByName',
+    delStu: '/api/delStu',
 }
 //
