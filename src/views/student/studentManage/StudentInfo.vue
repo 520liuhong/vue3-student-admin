@@ -33,7 +33,7 @@
         :page-size="pageSize"
         :page-sizes="[5, 10, 20, 40]"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="tableData.length"
+        :total="total"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
     />
@@ -43,8 +43,6 @@
         :dialogVisible="dialogVisible"
         @closeDialog="closeDialog"
     />
-
-    <el-button @click="register">测试</el-button>
   </div>
 </template>
 
@@ -67,6 +65,8 @@ const tableHeader = {
 const tableData = ref([])
 // 显示新增信息弹窗
 let dialogVisible = ref(false)
+// 数据总条数
+let total = ref(0)
 
 const options = reactive([
   {prop: 'id', label: '学号'},
@@ -97,12 +97,14 @@ onMounted(() => {
 const initCollegeList = () => {
   const param = {
     pageNo: currentPage.value,
-    pageSize: 10
+    pageSize: pageSize.value
   }
   post(api.getStuInfo, param).then(res => {
     const data = res.data
+    console.log('打印数据', data)
     if (data && data.length) {
       tableData.value = data
+      total.value = res.total
     }
   })
 }
@@ -142,19 +144,12 @@ const columnWidth = (index) => {
 }
 
 const handleSizeChange = (val) => {
-  console.log(`${val} items per page`)
+  pageSize.value = val
+  initCollegeList()
 }
 const handleCurrentChange = (val) => {
-  console.log(`current page: ${val}`)
-}
-
-const register = () => {
-  const params = {
-    name: '农学'
-  }
-  post(api.getStuByName, params).then(res => {
-    console.log('查看返回数据', res)
-  })
+  currentPage.value = val
+  initCollegeList()
 }
 
 const getSex = (e) => {
@@ -168,7 +163,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .na-header-btn-list {
   display: flex;
