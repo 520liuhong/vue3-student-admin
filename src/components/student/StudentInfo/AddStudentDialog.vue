@@ -70,6 +70,7 @@ watchEffect(() => {
 })
 
 // data
+// 添加信息form
 let addStuForm = reactive({
   name: '',
   sex: '',
@@ -77,6 +78,7 @@ let addStuForm = reactive({
   specialtyId: '',
   classId: ''
 })
+// form校验标准
 const addStuFormRules = ref({
   name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
   sex: [{required: true, message: '请选择性别', trigger: 'change'}],
@@ -84,7 +86,6 @@ const addStuFormRules = ref({
   specialtyId: [{required: true, message: '请选择专业', trigger: 'change'}],
   classId: [{required: true, message: '请选择班级', trigger: 'blur'}]
 })
-const user = ref('')
 
 let collegeList = ref([]) // 所有学院列表
 let specialtyList = ref([]) // 所选学院下的专业列表
@@ -104,6 +105,8 @@ const initCollegeList = () => {
     const data = res.data
     if (data && data.length) {
       collegeList.value = data
+      classList.value = []
+      addStuForm.classId = ''
     }
   })
 }
@@ -113,10 +116,14 @@ const initCollegeList = () => {
  */
 const chooseCollege = (id) => {
   post(api.getSpecialtyByCollege, {id: id}).then(res => {
+    console.log('查看数据', res)
     const data = res.data
     if (res.code === 200) {
       if (data && data.length) {
         specialtyList.value = data
+        addStuForm.specialtyId = ''
+        classList.value = []
+        addStuForm.classId = ''
       }
     }
   })
