@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="na-header-btn-list">
-      <el-button type="primary" @click="dialogVisible=true">添 加</el-button>
+      <el-button type="primary" @click="addStu">添 加</el-button>
       <div class="na-header-btn-list-right">
         <el-input placeholder="搜索" v-model="searchValue"></el-input>
         <el-button type="primary">搜索</el-button>
@@ -39,8 +39,10 @@
     />
 
     <!--新增学生信息弹窗-->
-    <add-student-dialog
+    <student-info-dialog
+        :type="dialogType"
         :dialogVisible="dialogVisible"
+        :editStuInfo="editStuInfo"
         @closeDialog="closeDialog"
     />
   </div>
@@ -48,7 +50,7 @@
 
 <script setup>
 import {onMounted, reactive, ref} from "vue";
-import AddStudentDialog from "@/components/student/StudentInfo/AddStudentDialog";
+import StudentInfoDialog from "@/components/student/StudentInfo/StudentInfoDialog";
 import {post} from "@/http/http";
 import {api} from "@/http/api";
 
@@ -65,6 +67,10 @@ const tableHeader = {
 const tableData = ref([])
 // 显示新增信息弹窗
 let dialogVisible = ref(false)
+// 弹窗的类型，默认为新增用户弹窗
+let dialogType = ref('add')
+// 编辑学生信息时，携带的学生信息
+let editStuInfo = ref({})
 // 数据总条数
 let total = ref(0)
 
@@ -101,14 +107,12 @@ const initCollegeList = () => {
   }
   post(api.getStuInfo, param).then(res => {
     const data = res.data
-    console.log('打印数据', data)
     if (data && data.length) {
       tableData.value = data
       total.value = res.total
     }
   })
 }
-
 /**
  * 获取弹窗子组件
  * @param e
@@ -116,7 +120,14 @@ const initCollegeList = () => {
 function closeDialog(e) {
   dialogVisible.value = e.value
 }
-
+/**
+ * 点击添加学生
+ */
+const addStu = () => {
+  dialogType.value = 'add'
+  dialogVisible.value = true
+  editStuInfo.value = {}
+}
 /**
  * 单个删除学生
  * @param e
@@ -131,7 +142,9 @@ const delStu = (e) => {
   })
 }
 const editStu = (e) => {
-  console.log('click----', e)
+  dialogType.value = 'edit'
+  dialogVisible.value = true
+  editStuInfo.value = e
 }
 const columnWidth = (index) => {
   if (index === 2) {
