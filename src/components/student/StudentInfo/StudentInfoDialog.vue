@@ -20,20 +20,24 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="学生院系" prop="collegeId">
-          <el-select v-model="stuForm.collegeId" placeholder="请选择" @change="chooseCollege">
+        <el-form-item label="生源地" prop="name">
+          <el-input v-model="stuForm.address"/>
+        </el-form-item>
+
+        <el-form-item label="学生院系" prop="college_id">
+          <el-select v-model="stuForm.college_id" placeholder="请选择" @change="chooseCollege">
             <el-option v-for="item in collegeList" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
 
-        <el-form-item label="学生专业" prop="specialtyId">
-          <el-select v-model="stuForm.specialtyId" placeholder="请选择" @change="chooseSpecialty">
+        <el-form-item label="学生专业" prop="specialty_id">
+          <el-select v-model="stuForm.specialty_id" placeholder="请选择" @change="chooseSpecialty">
             <el-option v-for="item in specialtyList" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
 
-        <el-form-item label="学生班级" prop="classId">
-          <el-select v-model="stuForm.classId" placeholder="请选择">
+        <el-form-item label="学生班级" prop="class_id">
+          <el-select v-model="stuForm.class_id" placeholder="请选择">
             <el-option v-for="item in classList" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
@@ -75,19 +79,21 @@ let dialogVisible = ref(false)
 // 添加信息form
 let stuForm = reactive({
   name: '',
+  address: '', // 目前是手输，后期改成select选择
   sex: '0',
-  collegeId: '',
-  specialtyId: '',
-  classId: ''
+  college_id: '',
+  specialty_id: '',
+  class_id: ''
 })
 
 // form校验标准
 const stuFormRules = ref({
   name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
   sex: [{required: true, message: '请选择性别', trigger: 'change'}],
-  collegeId: [{required: true, message: '请选择院系', trigger: 'change'}],
-  specialtyId: [{required: true, message: '请选择专业', trigger: 'change'}],
-  classId: [{required: true, message: '请选择班级', trigger: 'blur'}]
+  address: [{required: true, message: '请选择生源地', trigger: 'change'}],
+  college_id: [{required: true, message: '请选择院系', trigger: 'change'}],
+  specialty_id: [{required: true, message: '请选择专业', trigger: 'change'}],
+  class_id: [{required: true, message: '请选择班级', trigger: 'blur'}]
 })
 
 let collegeList = ref([]) // 所有学院列表
@@ -99,15 +105,14 @@ let stuFormRef = ref(null)
 watch(() => props.dialogVisible, (newVal) => {
   dialogVisible.value = newVal
   if (dialogVisible.value && Object.keys(props.editStuInfo).length) {
-    stuForm.name = props.editStuInfo.name
-    stuForm.sex = JSON.stringify(props.editStuInfo.sex)
-    stuForm.collegeId = parseFloat(props.editStuInfo.college_id)
-    stuForm.specialtyId = props.editStuInfo.specialty_id
-    stuForm.classId = props.editStuInfo.class_id
-    chooseCollege(stuForm.collegeId, 'init')
-    chooseSpecialty(stuForm.specialtyId, 'init')
+    stuForm = props.editStuInfo
+    stuForm.sex = JSON.stringify(stuForm.sex)
+    stuForm.college_id = parseFloat(stuForm.college_id)
+
+    chooseCollege(stuForm.college_id, 'init')
+    chooseSpecialty(stuForm.specialty_id, 'init')
   } else {
-    stuForm = reactive({name: '', sex: '0', collegeId: '', specialtyId: '', classId: ''})
+    stuForm = reactive({name: '', sex: '0', address: '', college_id: '', specialty_id: '', class_id: ''})
   }
 })
 
@@ -126,7 +131,7 @@ const initCollegeList = (init) => {
       collegeList.value = data
       if (init) {
         classList.value = []
-        stuForm.classId = ''
+        stuForm.class_id = ''
       }
     }
   })
@@ -143,9 +148,9 @@ const chooseCollege = (id, init) => {
       if (data && data.length) {
         specialtyList.value = data
         if (!init) {
-          stuForm.specialtyId = ''
+          stuForm.specialty_id = ''
           classList.value = []
-          stuForm.classId = ''
+          stuForm.class_id = ''
         }
       }
     }
@@ -163,7 +168,7 @@ const chooseSpecialty = (id, init) => {
       if (data && data.length) {
         classList.value = data
         if (!init) {
-          stuForm.classId = ''
+          stuForm.class_id = ''
         }
       }
     }
@@ -176,14 +181,13 @@ const chooseSpecialty = (id, init) => {
 const confirmAddStu = () => {
   stuFormRef.value.validate((valid) => {
     if (valid) {
-      console.log('点击提交前', stuForm)
       if (props.type === 'add') {
         post(api.addStu, stuForm).then(res => {
           if (res.code === 200) {
             // 关闭弹窗
             closelDialog()
             // 重置弹窗信息
-            stuForm = reactive({name: '', sex: '0', collegeId: '', specialtyId: '', classId: ''})
+            stuForm = reactive({name: '', sex: '0', address: '', college_id: '', specialty_id: '', class_id: ''})
 
             ElMessage({message: res.msg, type: 'success'})
           }
@@ -196,7 +200,6 @@ const confirmAddStu = () => {
     }
   })
 }
-
 /**
  * 关闭dialog弹窗
  */
@@ -204,7 +207,6 @@ const closelDialog = () => {
   dialogVisible.value = false
   $emit('closeDialog', dialogVisible)
 }
-
 </script>
 <script>
 export default {
