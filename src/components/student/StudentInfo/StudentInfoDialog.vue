@@ -195,9 +195,7 @@ const confirmAddStu = () => {
   stuFormRef.value.validate((valid) => {
     if (valid) {
       if (props.type === 'add') {
-        console.log('打印入参', stuForm)
         post(api.addStu, stuForm).then(res => {
-          console.log('打印接口', res)
           if (res.code === 200) {
             // 关闭弹窗
             closelDialog()
@@ -205,7 +203,6 @@ const confirmAddStu = () => {
             stuForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
             ElMessage({message: res.msg, type: 'success'})
           } else {
-            console.log('打印错误', res.msg)
             ElMessage.error(res.msg)
           }
         })
