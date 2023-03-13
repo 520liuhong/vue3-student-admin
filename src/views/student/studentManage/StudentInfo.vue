@@ -16,7 +16,7 @@
           </template>
           <template #default="scope">
             <div v-if="item.prop !== 'handel'" style="padding-left: 10px">
-              <span v-if="item.prop==='stu_sex'">{{ getSex(scope.row[item.prop]) }}</span>
+              <span v-if="item.prop==='sex'">{{ getSex(scope.row[item.prop]) }}</span>
               <span v-else>{{ scope.row[item.prop] }}</span>
             </div>
             <div v-else style="padding-left: 10px;text-align: center">
@@ -31,7 +31,7 @@
     <el-pagination
         :current-page="currentPage"
         :page-size="pageSize"
-        :page-sizes="[5, 10, 20, 40]"
+        :page-sizes="[10, 20, 40]"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
         @size-change="handleSizeChange"
@@ -75,12 +75,16 @@ let editStuInfo = ref({})
 let total = ref(0)
 
 const options = reactive([
-  {prop: 'id', label: '学号'},
+  {prop: 'id', label: '序号'},
+  {prop: 'stuId', label: '学号'},
   {prop: 'name', label: '姓名'},
   {prop: 'sex', label: '性别'},
   {prop: 'college', label: '院系'},
   {prop: 'specialty', label: '专业'},
   {prop: 'class', label: '班级'},
+  {prop: 'age', label: '年龄'},
+  {prop: 'phoneNo', label: '联系方式'},
+  {prop: 'address', label: '生源地'},
   {prop: 'handel', label: '操作'}
 ])
 
@@ -90,7 +94,7 @@ const searchValue = ref('')
 // 当前页码
 const currentPage = ref(1)
 // 每页条数
-const pageSize = ref(5)
+const pageSize = ref(10)
 
 onMounted(() => {
   initCollegeList()
@@ -147,12 +151,12 @@ const editStu = (e) => {
   editStuInfo.value = e
 }
 const columnWidth = (index) => {
-  if (index === 2) {
+  if (index === 0 || index === 3) {
     return '100'
-  } else if (index === 3) {
+  } else if (index === 4) {
     return '230'
   } else {
-    return '200'
+    return '180'
   }
 }
 
