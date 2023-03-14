@@ -200,6 +200,7 @@ const confirmAddStu = () => {
       } else {
         url = api.updateStu
         stuForm.value.age = parseFloat(stuForm.value.age)
+        // todo 此处用户记得修改
         stuForm.value.user = 'admin'
         param = stuForm.value
       }

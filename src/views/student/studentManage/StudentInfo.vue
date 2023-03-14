@@ -19,7 +19,12 @@
           <template #default="scope">
             <div v-if="item.prop !== 'handel'">
               <span v-if="item.prop==='sex'">{{ getSex(scope.row[item.prop]) }}</span>
-              <span v-else>{{ scope.row[item.prop] }}</span>
+              <span v-else>
+                <span v-if="scope.row[item.prop] !== ''&&scope.row[item.prop] !== null">
+                  {{ scope.row[item.prop] }}
+                </span>
+                <span v-else>-</span>
+              </span>
             </div>
             <div v-else style="text-align: center;">
               <el-button link type="primary" @click="delStu(scope.row)">删除</el-button>
@@ -87,8 +92,8 @@ const options = reactive([
   {prop: 'specialty', label: '专业'},
   {prop: 'class', label: '班级'},
   {prop: 'age', label: '年龄'},
-  {prop: 'phoneNo', label: '联系方式'},
   {prop: 'address', label: '生源地'},
+  {prop: 'phoneNo', label: '联系方式'},
   {prop: 'handel', label: '操作'}
 ])
 
