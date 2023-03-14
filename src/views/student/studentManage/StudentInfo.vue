@@ -3,23 +3,25 @@
     <div class="na-header-btn-list">
       <el-button type="primary" @click="addStu">添 加</el-button>
       <div class="na-header-btn-list-right">
+        <el-button v-show="selectStuIdList.length>0" type="danger" @click="delStu('', selectStuIdList)">删除</el-button>
         <el-input placeholder="搜索" v-model="searchValue"></el-input>
         <el-button type="primary">搜索</el-button>
       </div>
     </div>
 
-    <el-table :data="tableData" style="width: 100%" :header-cell-style="tableHeader">
+    <el-table :data="tableData" style="width: 100%" :header-cell-style="tableHeader" @select="selectStu" @select-all="selectAllStu">
+      <el-table-column type="selection" width="55" style="padding-left: -10px"></el-table-column>
       <template v-for="(item, index) in options" :key="index">
         <el-table-column :fixed="item.prop==='handel'?'right':null" :width="columnWidth(index)">
           <template #header>
             <div :style="{'text-align':item.prop==='handel'?'center':''}">{{ item.label }}</div>
           </template>
           <template #default="scope">
-            <div v-if="item.prop !== 'handel'" style="padding-left: 10px">
+            <div v-if="item.prop !== 'handel'">
               <span v-if="item.prop==='sex'">{{ getSex(scope.row[item.prop]) }}</span>
               <span v-else>{{ scope.row[item.prop] }}</span>
             </div>
-            <div v-else style="padding-left: 10px;text-align: center">
+            <div v-else style="text-align: center;">
               <el-button link type="primary" @click="delStu(scope.row)">删除</el-button>
               <el-button link type="primary" @click="editStu(scope.row)">修改</el-button>
             </div>
@@ -44,6 +46,7 @@
         :dialogVisible="dialogVisible"
         :editStuInfo="editStuInfo"
         @closeDialog="closeDialog"
+        @confirmDialog="confirmDialog"
     />
   </div>
 </template>
@@ -59,8 +62,7 @@ import {api} from "@/http/api";
 const tableHeader = {
   height: '50px',
   lineHeight: '50px',
-  fontSize: '16px',
-  paddingLeft: '10px'
+  fontSize: '16px'
 }
 
 // 学生表格数据
@@ -73,6 +75,8 @@ let dialogType = ref('add')
 let editStuInfo = ref({})
 // 数据总条数
 let total = ref(0)
+// 选中学生列表
+let selectStuIdList = ref([])
 
 const options = reactive([
   {prop: 'id', label: '序号'},
@@ -125,6 +129,14 @@ function closeDialog(e) {
   dialogVisible.value = e.value
 }
 /**
+ * 点击确定，关闭弹窗
+ * @param e
+ */
+function confirmDialog(e) {
+  dialogVisible.value = e.value
+  initCollegeList()
+}
+/**
  * 点击添加学生
  */
 const addStu = () => {
@@ -133,18 +145,55 @@ const addStu = () => {
   editStuInfo.value = {}
 }
 /**
- * 单个删除学生
+ * 删除学生
  * @param e
+ * @param list
  */
-const delStu = (e) => {
-  post(api.delStu, {id: e.id}).then(res => {
+const delStu = (e, list) => {
+  let ids = []
+  if (list && list.length > 0) {
+    ids = list
+  } else {
+    ids.push(e.id)
+  }
+
+  post(api.delStu, {ids: ids}).then(res => {
     if (res.code === 200) {
+      if (list && list.length > 0) {
+        // 隐藏删除按钮
+        selectStuIdList = []
+      }
+      ElMessage({message: res.msg, type: 'success'})
       initCollegeList()
     } else {
-      // 提示删除失败
+      ElMessage.error(res.msg)
     }
   })
 }
+/**
+ * 多选学生
+ * @param list
+ */
+const selectStu = (list) => {
+  const arr = []
+  if (list) {
+    list.forEach(item => {
+      arr.push(item.id)
+    })
+  }
+  selectStuIdList.value = arr
+}
+/**
+ * 全选学生
+ * @param list
+ */
+const selectAllStu = (list) => {
+  selectStu(list)
+}
+/**
+ * 编辑单个学生
+ * @param e
+ */
 const editStu = (e) => {
   dialogType.value = 'edit'
   dialogVisible.value = true

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--添加学生信息弹窗-->
-    <el-dialog v-model="dialogVisible" @close="closelDialog" title="添加学生信息" width="400">
+    <el-dialog v-model="dialogVisible" @close="closeDialog" title="添加学生信息" width="400">
       <el-form
           ref="stuFormRef"
           :model="stuForm"
@@ -10,7 +10,7 @@
           label-width="80px">
 
         <el-form-item label="学生姓名" prop="name">
-          <el-input v-model="stuForm.name"/>
+          <el-input v-model="stuForm.name" placeholder="请输入姓名" />
         </el-form-item>
 
         <el-form-item label="学生性别" prop="sex">
@@ -21,15 +21,15 @@
         </el-form-item>
 
         <el-form-item label="年龄" prop="age">
-          <el-input v-model="stuForm.age"/>
+          <el-input v-model="stuForm.age" placeholder="请输入年龄"/>
         </el-form-item>
 
         <el-form-item label="生源地" prop="address">
-          <el-input v-model="stuForm.address"/>
+          <el-input v-model="stuForm.address" placeholder="请输入生源地地址"/>
         </el-form-item>
 
         <el-form-item label="联系方式" prop="phoneNo">
-          <el-input v-model="stuForm.phoneNo"/>
+          <el-input v-model="stuForm.phoneNo" placeholder="请输入联系方式"/>
         </el-form-item>
 
         <el-form-item label="学生院系" prop="collegeId">
@@ -53,7 +53,7 @@
 
       <template #footer>
       <span class="dialog-footer">
-        <el-button @click="closelDialog">取消</el-button>
+        <el-button @click="closeDialog">取消</el-button>
         <el-button type="primary" @click="confirmAddStu">确认</el-button>
       </span>
       </template>
@@ -63,7 +63,6 @@
 
 <script setup>
 import {reactive, ref, onMounted, watch} from "vue";
-// import {ElMessage} from "element-plus";
 import {get, post} from "@/http/http";
 import {api} from "@/http/api";
 // 声明props
@@ -88,7 +87,7 @@ let dialogVisible = ref(false)
 const baseInfo = {
   name: '',
   sex: '0',
-  age: 0,
+  age: '',
   address: '', // 目前是手输，后期改成select选择
   phoneNo: '',
   collegeId: '',
@@ -187,7 +186,6 @@ const chooseSpecialty = (id, init) => {
     }
   })
 }
-
 /**
  * 弹窗点击确定
  */
@@ -195,10 +193,11 @@ const confirmAddStu = () => {
   stuFormRef.value.validate((valid) => {
     if (valid) {
       if (props.type === 'add') {
+        stuForm.age = parseFloat(stuForm.age)
         post(api.addStu, stuForm).then(res => {
           if (res.code === 200) {
             // 关闭弹窗
-            closelDialog()
+            confirmDialog()
             // 重置弹窗信息
             stuForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
             ElMessage({message: res.msg, type: 'success'})
@@ -217,9 +216,16 @@ const confirmAddStu = () => {
 /**
  * 关闭dialog弹窗
  */
-const closelDialog = () => {
+const closeDialog = () => {
   dialogVisible.value = false
   $emit('closeDialog', dialogVisible)
+}
+/**
+ * 点击确定，关闭弹窗
+ */
+const confirmDialog = () => {
+  dialogVisible.value = false
+  $emit('confirmDialog', dialogVisible)
 }
 </script>
 <script>
