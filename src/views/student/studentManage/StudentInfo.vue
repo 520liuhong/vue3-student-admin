@@ -5,7 +5,7 @@
       <div class="na-header-btn-list-right">
         <el-button v-show="selectStuIdList.length>0" class="na-header-del-btn" type="danger" @click="delStu('', selectStuIdList)">删除</el-button>
         <el-input placeholder="搜索" v-model="searchValue"></el-input>
-        <el-button type="primary">搜索</el-button>
+        <el-button type="primary" @click="searchStu" >搜索</el-button>
       </div>
     </div>
 
@@ -82,6 +82,12 @@ let editStuInfo = ref({})
 let total = ref(0)
 // 选中学生列表
 let selectStuIdList = ref([])
+// 搜索框的值
+const searchValue = ref('')
+// 当前页码
+const currentPage = ref(1)
+// 每页条数
+const pageSize = ref(10)
 
 const options = reactive([
   {prop: 'id', label: '序号'},
@@ -96,14 +102,6 @@ const options = reactive([
   {prop: 'phoneNo', label: '联系方式'},
   {prop: 'handel', label: '操作'}
 ])
-
-// 搜索框的值
-const searchValue = ref('')
-
-// 当前页码
-const currentPage = ref(1)
-// 每页条数
-const pageSize = ref(10)
 
 onMounted(() => {
   initCollegeList()
@@ -203,6 +201,20 @@ const editStu = (e) => {
   dialogType.value = 'edit'
   dialogVisible.value = true
   editStuInfo.value = e
+}
+/**
+ * 搜索学生信息
+ */
+const searchStu = () => {
+  console.log('入参', {name: searchValue.value})
+  post(api.getStuByName, {name: searchValue.value}).then(res => {
+    console.log('打印结果', res)
+    // if (res.code === 200) {
+    //
+    // } else {
+    //
+    // }
+  })
 }
 const columnWidth = (index) => {
   if (index === 0 || index === 3) {
