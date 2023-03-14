@@ -12,5 +12,5 @@ export const api = {
     addStu: '/api/addStu',
     getStuByName: '/api/getStuByName',
     delStu: '/api/delStu',
+    updateStu: '/api/updateStu',
 }
-//

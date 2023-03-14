@@ -117,12 +117,13 @@ let stuFormRef = ref(null)
 watch(() => props.dialogVisible, (newVal) => {
   dialogVisible.value = newVal
   if (dialogVisible.value && Object.keys(props.editStuInfo).length) {
-    stuForm = props.editStuInfo
-    stuForm.sex = JSON.stringify(stuForm.sex)
-    stuForm.collegeId = parseFloat(stuForm.collegeId)
+    // 避免浅拷贝，导致弹窗修改时，影响表格数据
+    stuForm = ref(JSON.parse(JSON.stringify(props.editStuInfo)))
+    stuForm.value.sex = JSON.stringify(stuForm.value.sex)
+    stuForm.value.collegeId = parseFloat(stuForm.value.collegeId)
 
-    chooseCollege(stuForm.collegeId, 'init')
-    chooseSpecialty(stuForm.specialtyId, 'init')
+    chooseCollege(stuForm.value.collegeId, 'init')
+    chooseSpecialty(stuForm.value.specialtyId, 'init')
   } else {
     stuForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
   }
@@ -192,22 +193,28 @@ const chooseSpecialty = (id, init) => {
 const confirmAddStu = () => {
   stuFormRef.value.validate((valid) => {
     if (valid) {
+      let url = api.addStu
+      let param = stuForm
       if (props.type === 'add') {
         stuForm.age = parseFloat(stuForm.age)
-        post(api.addStu, stuForm).then(res => {
-          if (res.code === 200) {
-            // 关闭弹窗
-            confirmDialog()
-            // 重置弹窗信息
-            stuForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
-            ElMessage({message: res.msg, type: 'success'})
-          } else {
-            ElMessage.error(res.msg)
-          }
-        })
       } else {
-        //
+        url = api.updateStu
+        stuForm.value.age = parseFloat(stuForm.value.age)
+        stuForm.value.user = 'admin'
+        param = stuForm.value
       }
+
+      post(url, param).then(res => {
+        if (res.code === 200) {
+          // 关闭弹窗
+          confirmDialog()
+          // 重置弹窗信息
+          stuForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
+          ElMessage({message: res.msg, type: 'success'})
+        } else {
+          ElMessage.error(res.msg)
+        }
+      })
     } else {
       return false
     }

@@ -3,7 +3,7 @@
     <div class="na-header-btn-list">
       <el-button type="primary" @click="addStu">添 加</el-button>
       <div class="na-header-btn-list-right">
-        <el-button v-show="selectStuIdList.length>0" type="danger" @click="delStu('', selectStuIdList)">删除</el-button>
+        <el-button v-show="selectStuIdList.length>0" class="na-header-del-btn" type="danger" @click="delStu('', selectStuIdList)">删除</el-button>
         <el-input placeholder="搜索" v-model="searchValue"></el-input>
         <el-button type="primary">搜索</el-button>
       </div>
@@ -238,6 +238,10 @@ export default {
 
 .na-header-btn-list-right {
   display: flex;
+
+  .na-header-del-btn {
+    margin: 0 12px;
+  }
 }
 
 .na-header-btn-list .el-button {
