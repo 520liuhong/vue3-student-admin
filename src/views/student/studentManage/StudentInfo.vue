@@ -203,17 +203,21 @@ const editStu = (e) => {
   editStuInfo.value = e
 }
 /**
- * 搜索学生信息
+ * 模糊搜索学生信息
  */
 const searchStu = () => {
-  console.log('入参', {name: searchValue.value})
-  post(api.getStuByName, {name: searchValue.value}).then(res => {
-    console.log('打印结果', res)
-    // if (res.code === 200) {
-    //
-    // } else {
-    //
-    // }
+  const param = {
+    q: searchValue.value,
+    pageNo: 1,
+    pageSize: pageSize.value
+  }
+  post(api.getStuByNameOrId, param).then(res => {
+    if (res.code === 200) {
+      tableData.value = res.data
+      total.value = res.total
+    } else {
+      ElMessage.error(res.msg)
+    }
   })
 }
 const columnWidth = (index) => {
