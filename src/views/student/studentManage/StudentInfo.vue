@@ -4,7 +4,7 @@
       <el-button type="primary" @click="addStu">添 加</el-button>
       <div class="na-header-btn-list-right">
         <el-button v-show="selectStuIdList.length>0" class="na-header-del-btn" type="danger" @click="delStu('', selectStuIdList)">删除</el-button>
-        <el-input placeholder="搜索" v-model="searchValue"></el-input>
+        <el-input placeholder="请输入学号或名字" v-model="searchValue" clearable></el-input>
         <el-button type="primary" @click="searchStu" >搜索</el-button>
       </div>
     </div>

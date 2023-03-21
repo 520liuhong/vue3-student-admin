@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--添加学生信息弹窗-->
-    <el-dialog v-model="dialogVisible" @close="closeDialog" title="添加学生信息" width="400">
+    <el-dialog v-model="dialogVisible" @close="closeDialog" title="添加学生信息" width="550">
       <el-form
           ref="stuFormRef"
           :model="stuForm"
@@ -9,8 +9,18 @@
           label-position="left"
           label-width="80px">
 
+        <el-form-item label="学生年级" prop="classId">
+          <el-select v-model="stuForm.grade" :placeholder="gradeList[0].name" :disabled="type==='add'">
+            <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"/>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="学生姓名" prop="name">
-          <el-input v-model="stuForm.name" placeholder="请输入姓名" />
+          <el-input v-model="stuForm.name" placeholder="请输入姓名"/>
+        </el-form-item>
+
+        <el-form-item label="学生学号" prop="stuId" v-if="type==='edit'">
+          <el-input v-model="stuForm.stuId" disabled/>
         </el-form-item>
 
         <el-form-item label="学生性别" prop="sex">
@@ -21,7 +31,15 @@
         </el-form-item>
 
         <el-form-item label="年龄" prop="age">
-          <el-input v-model="stuForm.age" placeholder="请输入年龄"/>
+          <span style="display: flex">
+            <el-date-picker
+                style="margin-bottom: 16px"
+                v-model="chooseDate"
+                type="date"
+                placeholder="请选择出生年月"
+            />
+          <el-input v-model="stuForm.age" placeholder="年龄" disabled/>
+          </span>
         </el-form-item>
 
         <el-form-item label="生源地" prop="address">
@@ -78,40 +96,61 @@ const props = defineProps({
   }
 })
 // 声明emits
-const $emit = defineEmits(['click'])
+const $emit = defineEmits(['closeDialog', 'confirmDialog'])
 
 let dialogVisible = ref(false)
 
 // data
 // 添加信息form
 const baseInfo = {
+  grade: '',
   name: '',
+  stuId: '',
   sex: '0',
   age: '',
   address: '', // 目前是手输，后期改成select选择
   phoneNo: '',
-  collegeId: '',
-  specialtyId: '',
+  collegeId: 0,
+  specialtyId: 0,
   classId: ''
 }
 let stuForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
 
 // form校验标准
 const stuFormRules = ref({
-  name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
+  grade: [{required: true, message: '2023', trigger: 'change'}],
+  name: [{
+    required: true,
+    message: '请输入姓名',
+    trigger: 'blur'
+  }, {
+    pattern: /(^[\u4e00-\u9fa5]{1}[\u4e00-\u9fa5\.·。]{0,18}[\u4e00-\u9fa5]{1}$)|(^[a-zA-Z]{1}[a-zA-Z\s]{0,18}[a-zA-Z]{1}$)/,
+    message: '请输入正确的名字'
+  }],
+  stuId: [{required: true, message: '', trigger: 'blur'}],
   sex: [{required: true, message: '请选择性别', trigger: 'change'}],
   age: [{required: true, message: '请输入年龄', trigger: 'blur'}],
   address: [{required: true, message: '请选择生源地', trigger: 'blur'}],
-  phoneNo: [{required: false, message: '请输入联系方式', trigger: 'blur'}],
+  phoneNo: [{
+    required: false,
+    message: '请输入联系方式',
+    trigger: 'blur'
+  }, {pattern: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: '请输入正确的手机号码或者座机号'}],
   collegeId: [{required: true, message: '请选择院系', trigger: 'change'}],
   specialtyId: [{required: true, message: '请选择专业', trigger: 'change'}],
   classId: [{required: true, message: '请选择班级', trigger: 'blur'}]
 })
 
+let gradeList = ref([]) // 年级列表
 let collegeList = ref([]) // 所有学院列表
 let specialtyList = ref([]) // 所选学院下的专业列表
 let classList = ref([]) // 所选专业下的班级列表
-let stuFormRef = ref(null)
+let stuFormRef = ref(null) // form表单实例
+const chooseDate = ref('') // 选择出生日期
+
+gradeList.value = [
+  {id: 9, name: '2023'}
+]
 
 // 监听
 watch(() => props.dialogVisible, (newVal) => {

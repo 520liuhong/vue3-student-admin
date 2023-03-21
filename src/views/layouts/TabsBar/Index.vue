@@ -66,8 +66,6 @@ import {reactive, ref, watchEffect} from "vue";
 import {useStore} from "vuex";
 import {ArrowRight} from '@element-plus/icons-vue'
 import {useRoute, useRouter} from "vue-router";
-import {post} from "@/http/http";
-import {api} from "@/http/api";
 
 const store = useStore()
 const route = useRoute()
@@ -124,7 +122,8 @@ const handleCommand = (command) => {
       break
   }
 }
-
+const closelDialog = () => {
+}
 /**
  * 修改密码
  */
