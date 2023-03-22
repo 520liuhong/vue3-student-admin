@@ -43,6 +43,7 @@
         :total="total"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
+        :key="new Date().getTime()"
     />
 
     <!--新增学生信息弹窗-->

@@ -33,12 +33,14 @@
         <el-form-item label="年龄" prop="age">
           <span style="display: flex">
             <el-date-picker
-                style="margin-bottom: 16px"
-                v-model="chooseDate"
+                v-model="stuForm.birthday"
                 type="date"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
                 placeholder="请选择出生年月"
+                @change="getAgeDate"
             />
-          <el-input v-model="stuForm.age" placeholder="年龄" disabled/>
+          <el-input v-model="stuForm.age" class="add-input-age" placeholder="年龄" disabled/>
           </span>
         </el-form-item>
 
@@ -83,6 +85,7 @@
 import {reactive, ref, onMounted, watch} from "vue";
 import {get, post} from "@/http/http";
 import {api} from "@/http/api";
+import {getTimeFromSomeDateToNow} from "@/utils/date-util";
 // 声明props
 const props = defineProps({
   type: {
@@ -102,22 +105,23 @@ let dialogVisible = ref(false)
 
 // data
 // 添加信息form
-const baseInfo = {
+const baseInfo = reactive({
   grade: '',
   name: '',
   stuId: '',
   sex: '0',
+  birthday: (new Date().getFullYear() - 18) + '-01-01',
   age: '',
   address: '', // 目前是手输，后期改成select选择
   phoneNo: '',
-  collegeId: 0,
-  specialtyId: 0,
+  collegeId: '',
+  specialtyId: '',
   classId: ''
-}
+})
 let stuForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
 
 // form校验标准
-const stuFormRules = ref({
+const stuFormRules = reactive({
   grade: [{required: true, message: '2023', trigger: 'change'}],
   name: [{
     required: true,
@@ -129,8 +133,9 @@ const stuFormRules = ref({
   }],
   stuId: [{required: true, message: '', trigger: 'blur'}],
   sex: [{required: true, message: '请选择性别', trigger: 'change'}],
-  age: [{required: true, message: '请输入年龄', trigger: 'blur'}],
-  address: [{required: true, message: '请选择生源地', trigger: 'blur'}],
+  birthday: [{required: true, message: '请选择出生年月', trigger: 'blur'}],
+  age: [{required: true, message: '请选择出生年月', trigger: 'blur'}],
+  address: [{required: true, type: 'string', message: '请选择生源地', trigger: 'blur'}],
   phoneNo: [{
     required: false,
     message: '请输入联系方式',
@@ -146,7 +151,6 @@ let collegeList = ref([]) // 所有学院列表
 let specialtyList = ref([]) // 所选学院下的专业列表
 let classList = ref([]) // 所选专业下的班级列表
 let stuFormRef = ref(null) // form表单实例
-const chooseDate = ref('') // 选择出生日期
 
 gradeList.value = [
   {id: 9, name: '2023'}
@@ -173,6 +177,17 @@ onMounted(() => {
 })
 
 // methods
+/**
+ * 获取年龄框
+ */
+const getAgeDate = (params) => {
+  if (params) {
+    const time = getTimeFromSomeDateToNow(params)
+    stuForm.value.age = time.year
+  } else {
+    stuForm.age = ''
+  }
+}
 /**
  * 初始化学院列表
  */
@@ -282,5 +297,8 @@ export default {
 </script>
 
 <style scoped>
-
+.add-input-age {
+  width: 50px;
+  height: 30px;
+}
 </style>
