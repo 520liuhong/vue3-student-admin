@@ -13,6 +13,7 @@ export const api = {
     getStuByNameOrId: '/api/getStuByNameOrId',
     delStu: '/api/delStu',
     updateStu: '/api/updateStu',
+    getGrade: '/api/getGrade',
     admin: {
         getAdminInfo: '/api/getAdminInfo'
     }

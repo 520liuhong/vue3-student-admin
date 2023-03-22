@@ -152,10 +152,6 @@ let specialtyList = ref([]) // 所选学院下的专业列表
 let classList = ref([]) // 所选专业下的班级列表
 let stuFormRef = ref(null) // form表单实例
 
-gradeList.value = [
-  {id: 9, name: '2023'}
-]
-
 // 监听
 watch(() => props.dialogVisible, (newVal) => {
   dialogVisible.value = newVal
@@ -165,6 +161,7 @@ watch(() => props.dialogVisible, (newVal) => {
     stuForm.value.sex = JSON.stringify(stuForm.value.sex)
     stuForm.value.collegeId = parseFloat(stuForm.value.collegeId)
 
+    getGradeList()
     chooseCollege(stuForm.value.collegeId, 'init')
     chooseSpecialty(stuForm.value.specialtyId, 'init')
   } else {
@@ -174,6 +171,7 @@ watch(() => props.dialogVisible, (newVal) => {
 
 onMounted(() => {
   initCollegeList()
+  getGradeList()
 })
 
 // methods
@@ -183,10 +181,18 @@ onMounted(() => {
 const getAgeDate = (params) => {
   if (params) {
     const time = getTimeFromSomeDateToNow(params)
-    stuForm.value.age = time.year
+    stuForm.age = time.year
   } else {
     stuForm.age = ''
   }
+}
+const getGradeList = () => {
+  post(api.getGrade).then(res => {
+    const data = res.data
+    if (data && data.length) {
+      gradeList.value = data
+    }
+  })
 }
 /**
  * 初始化学院列表
@@ -251,13 +257,17 @@ const confirmAddStu = () => {
       let param = stuForm
       if (props.type === 'add') {
         stuForm.age = parseFloat(stuForm.age)
+        stuForm.grade = gradeList.value[0].name
       } else {
         url = api.updateStu
-        stuForm.value.age = parseFloat(stuForm.value.age)
+        stuForm.age = parseFloat(stuForm.age)
         // todo 此处用户记得修改
         stuForm.value.user = 'admin'
-        param = stuForm.value
+        param = stuForm
       }
+      const item = gradeList.value.find(t => t.name === stuForm.grade)
+      param.gradeId = item.id
+      console.log('打印入参', param)
 
       post(url, param).then(res => {
         if (res.code === 200) {
