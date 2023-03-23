@@ -10,7 +10,7 @@
           label-width="80px">
 
         <el-form-item label="学生年级" prop="classId">
-          <el-select v-model="stuForm.grade" :placeholder="gradeList[0].name" :disabled="type==='add'">
+          <el-select v-model="stuForm.gradeId" :placeholder="gradeList[0].name" :disabled="type==='add'">
             <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
@@ -186,6 +186,9 @@ const getAgeDate = (params) => {
     stuForm.age = ''
   }
 }
+/**
+ * 获取年级列表
+ */
 const getGradeList = () => {
   post(api.getGrade).then(res => {
     const data = res.data
@@ -257,17 +260,14 @@ const confirmAddStu = () => {
       let param = stuForm
       if (props.type === 'add') {
         stuForm.age = parseFloat(stuForm.age)
-        stuForm.grade = gradeList.value[0].name
+        stuForm.gradeId = gradeList.value[0].id
       } else {
         url = api.updateStu
         stuForm.age = parseFloat(stuForm.age)
         // todo 此处用户记得修改
         stuForm.value.user = 'admin'
-        param = stuForm
+        param = stuForm.value
       }
-      const item = gradeList.value.find(t => t.name === stuForm.grade)
-      param.gradeId = item.id
-      console.log('打印入参', param)
 
       post(url, param).then(res => {
         if (res.code === 200) {
