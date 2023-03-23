@@ -16,7 +16,7 @@
         </el-form-item>
 
         <el-form-item label="学生姓名" prop="name">
-          <el-input v-model="stuForm.name" placeholder="请输入姓名"/>
+          <el-input v-model="stuForm.name" minlength="2" maxlength="20" placeholder="请输入姓名"/>
         </el-form-item>
 
         <el-form-item label="学生学号" prop="stuId" v-if="type==='edit'">
@@ -45,7 +45,7 @@
         </el-form-item>
 
         <el-form-item label="生源地" prop="address">
-          <el-input v-model="stuForm.address" placeholder="请输入生源地地址"/>
+          <el-input v-model="stuForm.address" type="text" show-word-limit minlength="2" maxlength="255" placeholder="请输入生源地地址"/>
         </el-form-item>
 
         <el-form-item label="联系方式" prop="phoneNo">
