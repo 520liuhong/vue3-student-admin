@@ -79,6 +79,20 @@ const routes = [
             component: () => import('../views/admin/Authority')
           }
         ]
+      },
+      {
+        path: '/agency',
+        name: 'Admin',
+        meta: { title: '机构', icon: 'iconfont icon-admin' },
+        component: () => import('../views/agency/Index'),
+        children: [
+          {
+            path: '/classManagement',
+            name: 'ClassManagement',
+            meta: { title: '班级管理' },
+            component: () => import('../views/agency/classManage/ClassInfo')
+          }
+        ]
       }
     ]
   }
