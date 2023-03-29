@@ -6,7 +6,7 @@
 -->
 <template>
   <div>
-    <el-table :data="tableData1" style="width: 100%" :header-cell-style="tableHeader" @select="onSelect" @select-all="onSelectAll">
+    <el-table :data="props.tableData" style="width: 100%" :header-cell-style="tableHeader" @select="onSelect" @select-all="onSelectAll">
       <el-table-column type="selection" width="55" style="padding-left: -10px"></el-table-column>
       <template v-for="(item, index) in options" :key="index">
         <el-table-column :fixed="item.prop==='handel'?'right':null" :min-width="item.width">
@@ -38,8 +38,6 @@ import {defineProps} from "vue";
 /**
  * props
  */
-import {reactive, ref} from "vue";
-
 const props = defineProps({
   tableData: {
     type: Array
@@ -56,9 +54,6 @@ console.log('获取组件班级', props.tableData)
 /**
  * data
  */
-let tableData1 = ref([])
-// eslint-disable-next-line vue/no-setup-props-destructure
-tableData1 = props.tableData
 // 表头样式
 const tableHeader = {
   height: '50px',

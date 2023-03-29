@@ -10,6 +10,6 @@ import BaseTable from "@/commons/BaseTable";
 
 const app = createApp(App)
 
-createApp(App).use(store).use(router).mount('#app')
+app.use(store).use(router).mount('#app')
 
 app.component('base-table', BaseTable)

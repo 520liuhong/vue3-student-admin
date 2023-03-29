@@ -11,15 +11,14 @@
 import {post} from "@/http/http";
 import {api} from "@/http/api";
 import {onMounted, reactive, ref} from "vue";
-import baseTable from "@/commons/BaseTable";
 
-const tableData = ref([])
 // 表头样式
 const tableHeader = {
   height: '50px',
   lineHeight: '50px',
   fontSize: '16px'
 }
+let tableData = ref([])
 const options = reactive([
   {prop: 'id', label: '序号', width: 100},
   {prop: 'classId', label: '班号', width: 200},
