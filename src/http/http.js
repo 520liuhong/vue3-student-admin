@@ -2,7 +2,7 @@ import axios from 'axios'
 
 switch (process.env.NODE_ENV) {
     // 生产环境，部署到服务器上的环境
-    case 'production':
+    case 'PROD':
         axios.defaults.baseURL = 'http://192.168.58.77:8088';
         break;
     //开发环境接口地址
