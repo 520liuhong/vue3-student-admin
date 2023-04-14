@@ -28,7 +28,7 @@
             </div>
             <div v-else style="text-align: center;">
               <el-button link type="primary" @click="delStu(scope.row)">删除</el-button>
-              <el-button link type="primary" @click="editStu(scope.row)">修改</el-button>
+              <el-button link type="primary" @click="editStu(scope.row)">编辑</el-button>
             </div>
           </template>
         </el-table-column>

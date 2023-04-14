@@ -3,7 +3,12 @@
     <base-table
         :tableData="tableData"
         :options="options"
+        @onDel="onDel"
+        @onEdit="onEdit"
+        @onSelect="selectClass"
+        @onSelectAll="selectAllClass"
     />
+    <class-edit-dialog></class-edit-dialog>
   </div>
 </template>
 
@@ -11,6 +16,7 @@
 import {post} from "@/http/http";
 import {api} from "@/http/api";
 import {onMounted, reactive, ref} from "vue";
+import ClassEditDialog from "@/components/agency/class/ClassEditDialog";
 
 // 表头样式
 const tableHeader = {
@@ -28,15 +34,15 @@ const options = reactive([
   {prop: 'teacher', label: '班主任', width: 200},
   {prop: 'handel', label: '操作', width: 180}
 ])
+const valueIp = ref('')
 
 onMounted(() => {
   getClassInfo()
 })
 
-const getClassInfo = (id, init) => {
+const getClassInfo = (id) => {
   post(api.agency.getClass, {id: id}).then(res => {
     const data = res.data
-    console.log('获取班级', data)
     if (res.code === 200) {
       if (data && data.length) {
         tableData.value = data
@@ -64,14 +70,15 @@ const selectClass = (list) => {
 const selectAllClass = (list) => {
   selectClass(list)
 }
-const delClass = () => {
-  
+const onDel = (e) => {
+  console.log('删除获取信息', e)
 }
 /**
  * 编辑单个学生
  * @param e
  */
-const editClass = (e) => {
+const onEdit = (e) => {
+  console.log('点击编辑', e)
   // dialogType.value = 'edit'
   // dialogVisible.value = true
   // editStuInfo.value = e

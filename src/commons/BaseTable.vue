@@ -6,7 +6,8 @@
 -->
 <template>
   <div>
-    <el-table :data="props.tableData" style="width: 100%" :header-cell-style="tableHeader" @select="onSelect" @select-all="onSelectAll">
+    <el-table :data="props.tableData" style="width: 100%" :header-cell-style="tableHeader" @select="onSelect"
+              @select-all="onSelectAll">
       <el-table-column type="selection" width="55" style="padding-left: -10px"></el-table-column>
       <template v-for="(item, index) in options" :key="index">
         <el-table-column :fixed="item.prop==='handel'?'right':null" :min-width="item.width">
@@ -24,7 +25,7 @@
             </div>
             <div v-else style="text-align: center;">
               <el-button link type="primary" @click="onDel(scope.row)">删除</el-button>
-              <el-button link type="primary" @click="onEdit(scope.row)">修改</el-button>
+              <el-button link type="primary" @click="onEdit(scope.row)">编辑</el-button>
             </div>
           </template>
         </el-table-column>
@@ -35,6 +36,7 @@
 
 <script setup>
 import {defineProps} from "vue";
+
 /**
  * props
  */
@@ -47,9 +49,7 @@ const props = defineProps({
   }
 })
 // 声明emits
-const $emit = defineEmits(['closeDialog', 'confirmDialog'])
-
-console.log('获取组件班级', props.tableData)
+const $emit = defineEmits(['closeDialog', 'confirmDialog', 'onSelect', 'onSelectAll', 'onDel', 'onEdit'])
 
 /**
  * data
@@ -61,42 +61,25 @@ const tableHeader = {
   fontSize: '16px'
 }
 
-/**
- * methods
- */
-/**
- * 单选或多选
- * @param list
- */
+// methods
+/** 单选或多选 */
 const onSelect = (list) => {
-  const arr = []
-  if (list) {
-    list.forEach(item => {
-      arr.push(item.id)
-    })
-  }
-  console.log('单选', list)
+  $emit('onSelect', list)
 }
-/**
- * 全选
- * @param list
- */
+/** 全选 */
 const onSelectAll = (list) => {
-  onSelect(list)
+  $emit('onSelectAll', list)
 }
-/**
- * 删除
- */
+/** 删除 */
 const onDel = (row) => {
-
+  $emit('onDel', row)
 }
-/**
- * 编辑
- */
+/** 编辑 */
 const onEdit = (row) => {
-
+  $emit('onEdit', row)
 }
 </script>
+
 <script>
 export default {
   name: "BaseTable"
