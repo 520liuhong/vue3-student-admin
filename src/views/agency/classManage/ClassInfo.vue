@@ -8,7 +8,14 @@
         @onSelect="selectClass"
         @onSelectAll="selectAllClass"
     />
-    <class-edit-dialog></class-edit-dialog>
+    <class-edit-dialog
+        :type="dialogType"
+        :dialogVisible="dialogVisible"
+        :editClassInfo="editClassInfo"
+        @closeDialog="closeDialog"
+        @confirmDialog="confirmDialog"
+    ></class-edit-dialog>
+    <el-button @click="showDialog=true">弹出</el-button>
   </div>
 </template>
 
@@ -18,23 +25,23 @@ import {api} from "@/http/api";
 import {onMounted, reactive, ref} from "vue";
 import ClassEditDialog from "@/components/agency/class/ClassEditDialog";
 
-// 表头样式
-const tableHeader = {
-  height: '50px',
-  lineHeight: '50px',
-  fontSize: '16px'
-}
 let tableData = ref([])
 const options = reactive([
   {prop: 'id', label: '序号', width: 100},
   {prop: 'classId', label: '班号', width: 200},
-  {prop: 'className', label: '班级名称', width: 230},
-  {prop: 'collegeName', label: '学院', width: 230},
-  {prop: 'specialtyName', label: '专业', width: 230},
+  {prop: 'class', label: '班级名称', width: 230},
+  {prop: 'college', label: '学院', width: 230},
+  {prop: 'specialty', label: '专业', width: 230},
   {prop: 'teacher', label: '班主任', width: 200},
   {prop: 'handel', label: '操作', width: 180}
 ])
-const valueIp = ref('')
+// 弹窗的类型，默认为新增班级弹窗
+let dialogType = ref('add')
+// 显示新增信息弹窗
+let dialogVisible = ref(false)
+// 编辑班级信息时，携带的班级信息
+let editClassInfo = ref({})
+let showDialog = ref(false)
 
 onMounted(() => {
   getClassInfo()
@@ -50,10 +57,7 @@ const getClassInfo = (id) => {
     }
   })
 }
-/**
- * 多选学生
- * @param list
- */
+/** 多选班级 */
 const selectClass = (list) => {
   const arr = []
   if (list) {
@@ -61,29 +65,37 @@ const selectClass = (list) => {
       arr.push(item.id)
     })
   }
-  // selectClassIdList.value = arr
 }
-/**
- * 全选学生
- * @param list
- */
+/** 全选班级 */
 const selectAllClass = (list) => {
   selectClass(list)
 }
 const onDel = (e) => {
   console.log('删除获取信息', e)
 }
-/**
- * 编辑单个学生
- * @param e
- */
+/** 点击添加班级 */
+const addClass = () => {
+  dialogType.value = 'add'
+  dialogVisible.value = true
+  editClassInfo.value = {}
+}
+/** 编辑单个班级 */
 const onEdit = (e) => {
   console.log('点击编辑', e)
-  // dialogType.value = 'edit'
-  // dialogVisible.value = true
-  // editStuInfo.value = e
+  dialogType.value = 'edit'
+  dialogVisible.value = true
+  editClassInfo.value = e
+}/** 获取弹窗子组件 */
+function closeDialog(e) {
+  dialogVisible.value = e.value
+}
+/** 点击确定，关闭弹窗 */
+function confirmDialog(e) {
+  dialogVisible.value = e.value
+  // initCollegeList()
 }
 </script>
+
 <script>
 export default {
   name: "ClassInfo"

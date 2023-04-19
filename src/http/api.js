@@ -18,6 +18,7 @@ export const api = {
         getAdminInfo: '/api/getAdminInfo'
     },
     agency: {
-        getClass: '/api/getClass'
+        getClass: '/api/getClass',
+        getTeacher: 'api/getTeacher'
     }
 }
