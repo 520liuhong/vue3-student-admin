@@ -14,8 +14,7 @@
         :editClassInfo="editClassInfo"
         @closeDialog="closeDialog"
         @confirmDialog="confirmDialog"
-    ></class-edit-dialog>
-    <el-button @click="showDialog=true">弹出</el-button>
+    />
   </div>
 </template>
 
@@ -25,6 +24,7 @@ import {api} from "@/http/api";
 import {onMounted, reactive, ref} from "vue";
 import ClassEditDialog from "@/components/agency/class/ClassEditDialog";
 
+// 表格数据
 let tableData = ref([])
 const options = reactive([
   {prop: 'id', label: '序号', width: 100},
@@ -41,14 +41,13 @@ let dialogType = ref('add')
 let dialogVisible = ref(false)
 // 编辑班级信息时，携带的班级信息
 let editClassInfo = ref({})
-let showDialog = ref(false)
 
 onMounted(() => {
   getClassInfo()
 })
 
-const getClassInfo = (id) => {
-  post(api.agency.getClass, {id: id}).then(res => {
+const getClassInfo = () => {
+  post(api.agency.getClass).then(res => {
     const data = res.data
     if (res.code === 200) {
       if (data && data.length) {
@@ -87,12 +86,12 @@ const onEdit = (e) => {
   editClassInfo.value = e
 }/** 获取弹窗子组件 */
 function closeDialog(e) {
-  dialogVisible.value = e.value
+  dialogVisible.value = e
 }
 /** 点击确定，关闭弹窗 */
 function confirmDialog(e) {
-  dialogVisible.value = e.value
-  // initCollegeList()
+  dialogVisible.value = e
+  getClassInfo()
 }
 </script>
 

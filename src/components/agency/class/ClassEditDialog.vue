@@ -33,12 +33,12 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="班级编号" prop="classId" v-if="type==='edit'">
-          <el-input v-model="classForm.classId" disabled/>
+        <el-form-item label="班级编号" prop="classId">
+          <el-input v-model="classForm.classId"/>
         </el-form-item>
 
-        <el-form-item label="班级名称" prop="class" v-if="type==='edit'">
-          <el-input v-model="classForm.class" disabled/>
+        <el-form-item label="班级名称" prop="class">
+          <el-input v-model="classForm.class"/>
         </el-form-item>
 
         <el-form-item label="班主任" prop="teacherId">
@@ -98,15 +98,8 @@ const classFormRules = reactive({
   collegeId: [{required: true, message: '请选择院系', trigger: 'change'}],
   specialtyId: [{required: true, message: '请选择专业', trigger: 'change'}],
   classId: [{required: true, message: '请选择班级', trigger: 'blur'}],
-  class: [{
-    required: true,
-    message: '请输入姓名',
-    trigger: 'blur'
-  }, {
-    pattern: /(^[\u4e00-\u9fa5]{1}[\u4e00-\u9fa5\.·。]{0,18}[\u4e00-\u9fa5]{1}$)|(^[a-zA-Z]{1}[a-zA-Z\s]{0,18}[a-zA-Z]{1}$)/,
-    message: '请输入正确的名称'
-  }],
-  teacherId: [{required: true, message: '请选择班主任', trigger: 'change'}],
+  class: [{required: true, message: '请输入名称', trigger: 'blur'}],
+  teacherId: [{required: true, message: '请选择班主任', trigger: 'change'}]
 })
 
 let gradeList = ref([]) // 年级列表
@@ -178,10 +171,11 @@ const chooseCollege = (id, init) => {
       if (data && data.length) {
         specialtyList.value = data
         if (!init) {
-          classForm.specialtyId = ''
+          classForm.value.specialtyId = ''
           classList.value = []
-          classForm.classId = ''
+          classForm.value.classId = ''
         }
+        chooseTeacherByCollege()
       }
     }
   })
@@ -194,24 +188,62 @@ const chooseCollege = (id, init) => {
 const chooseSpecialty = (id, init) => {
   post(api.getClassBySpecialty, {id: id}).then(res => {
     const data = res.data
-    if (res.code === 200) {
-      if (data && data.length) {
-        classList.value = data
-        if (!init) {
-          classForm.classId = ''
-        }
+    if (res.code === 200 && data) {
+      classList.value = data
+      if (!init) {
+        classForm.classId = ''
       }
+    }
+  })
+}
+const chooseTeacherByCollege = () => {
+  post(api.agency.getTeacherByCollege, {collegeId: classForm.value.collegeId}).then(res => {
+    const data = res.data
+    if (res.code === 200 && data) {
+      teacherList.value = data
     }
   })
 }
 /** 关闭dialog弹窗 */
 const closeDialog = () => {
   dialogVisible.value = false
-  $emit('closeDialog', dialogVisible)
+  $emit('closeDialog', false)
 }
+/** 点击弹窗的确定按钮 */
 const confirmAddClass = () => {
-  dialogVisible.value = false
-  $emit('confirmDialog', dialogVisible)
+  classFormRef.value.validate((valid) => {
+    if (valid) {
+      let url = api.agency.addClass
+      let param = classForm
+
+      if (props.type === 'add') {
+        param.gradeId = gradeList.value[0].id
+      } else {
+        url = api.agency.updateClass
+        // todo 此处用户记得修改
+        classForm.value.user = 'admin'
+        param = classForm.value
+      }
+
+      post(url, param).then(res => {
+        if (res.code === 200) {
+          // 关闭弹窗
+          dialogVisible.value = false
+          $emit('confirmDialog', false)
+          // 重置弹窗信息
+          classForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
+          ElMessage({message: '修改成功', type: 'success'})
+        } else {
+          ElMessage.error('修改失败')
+        }
+      }).catch(err => {
+        console.error(err)
+        ElMessage.error('请求失败')
+      })
+    } else {
+      return false
+    }
+  })
 }
 </script>
 
