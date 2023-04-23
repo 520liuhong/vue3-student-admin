@@ -20,7 +20,6 @@ export const api = {
     agency: {
         getClass: '/api/getClass',
         getTeacher: '/api/getTeacher',
-        getTeacherByCollege: '/api/getTeacherByCollege',
         updateClass: '/api/updateClass'
     }
 }

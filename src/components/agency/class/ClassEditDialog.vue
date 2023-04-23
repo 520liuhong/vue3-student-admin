@@ -16,7 +16,7 @@
           label-width="80px">
 
         <el-form-item label="年级" prop="grade">
-          <el-select v-model="classForm.grade" placeholder="请选择" @change="getGradeList">
+          <el-select v-model="classForm.gradeId" placeholder="请选择" @change="getGradeList">
             <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
@@ -83,7 +83,7 @@ let dialogVisible = ref(false)
 // data
 // 添加信息form
 const baseInfo = reactive({
-  grade: '',
+  gradeId: '',
   collegeId: '',
   specialtyId: '',
   classId: '',
@@ -94,7 +94,7 @@ let classForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
 
 // form校验标准
 const classFormRules = reactive({
-  grade: [{required: true, message: '2023', trigger: 'change'}],
+  gradeId: [{required: true, message: '请选择年级', trigger: 'change'}],
   collegeId: [{required: true, message: '请选择院系', trigger: 'change'}],
   specialtyId: [{required: true, message: '请选择专业', trigger: 'change'}],
   classId: [{required: true, message: '请选择班级', trigger: 'blur'}],
@@ -139,12 +139,7 @@ const getGradeList = () => {
       gradeList.value = data
     }
   })
-  post(api.agency.getTeacher).then(res => {
-    const data = res.data
-    if (data && data.length) {
-      teacherList.value = data
-    }
-  })
+  getTeacherList()
 }
 /** 初始化学院列表 */
 const initCollegeList = (init) => {
@@ -174,8 +169,10 @@ const chooseCollege = (id, init) => {
           classForm.value.specialtyId = ''
           classList.value = []
           classForm.value.classId = ''
+          teacherList.value = []
+          classForm.value.teacherId = ''
         }
-        chooseTeacherByCollege()
+        getTeacherList('college')
       }
     }
   })
@@ -192,12 +189,22 @@ const chooseSpecialty = (id, init) => {
       classList.value = data
       if (!init) {
         classForm.classId = ''
+        classForm.value.teacherId = ''
       }
+      getTeacherList('specialty')
     }
   })
 }
-const chooseTeacherByCollege = () => {
-  post(api.agency.getTeacherByCollege, {collegeId: classForm.value.collegeId}).then(res => {
+/** 获取教师列表 */
+const getTeacherList = (e) => {
+  let params = {}
+  if (e === 'college') {
+    params = {collegeId: classForm.value.collegeId}
+  } else if (e === 'specialty') {
+    params = {specialtyId: classForm.value.specialtyId}
+  }
+
+  post(api.agency.getTeacher, params).then(res => {
     const data = res.data
     if (res.code === 200 && data) {
       teacherList.value = data
