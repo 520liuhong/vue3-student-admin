@@ -80,7 +80,6 @@ const addClass = () => {
 }
 /** 编辑单个班级 */
 const onEdit = (e) => {
-  console.log('点击编辑', e)
   dialogType.value = 'edit'
   dialogVisible.value = true
   editClassInfo.value = e

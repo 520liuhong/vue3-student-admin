@@ -62,6 +62,7 @@
 import {reactive, ref, onMounted, watch} from "vue";
 import {get, post} from "@/http/http";
 import {api} from "@/http/api";
+import {storagekey} from "@/utils/constants";
 
 // 声明props
 const props = defineProps({
@@ -221,15 +222,13 @@ const confirmAddClass = () => {
   classFormRef.value.validate((valid) => {
     if (valid) {
       let url = api.agency.addClass
-      let param = classForm
+      let param = classForm.value
 
       if (props.type === 'add') {
         param.gradeId = gradeList.value[0].id
       } else {
         url = api.agency.updateClass
-        // todo 此处用户记得修改
-        classForm.value.user = 'admin'
-        param = classForm.value
+        param.user = localStorage.getItem(storagekey.username)
       }
 
       post(url, param).then(res => {
@@ -239,9 +238,18 @@ const confirmAddClass = () => {
           $emit('confirmDialog', false)
           // 重置弹窗信息
           classForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
-          ElMessage({message: '修改成功', type: 'success'})
+
+          if (props.type === 'add') {
+            ElMessage({message: '新增成功', type: 'success'})
+          } else {
+            ElMessage({message: '修改成功', type: 'success'})
+          }
         } else {
-          ElMessage.error('修改失败')
+          if (props.type === 'add') {
+            ElMessage.error('新增失败')
+          } else {
+            ElMessage.error('修改失败')
+          }
         }
       }).catch(err => {
         console.error(err)

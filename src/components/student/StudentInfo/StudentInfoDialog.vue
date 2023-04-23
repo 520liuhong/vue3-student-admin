@@ -86,6 +86,7 @@ import {reactive, ref, onMounted, watch} from "vue";
 import {get, post} from "@/http/http";
 import {api} from "@/http/api";
 import {getTimeFromSomeDateToNow} from "@/utils/date-util";
+import {storagekey} from "@/utils/constants";
 // 声明props
 const props = defineProps({
   type: {
@@ -258,15 +259,13 @@ const confirmAddStu = () => {
     if (valid) {
       let url = api.addStu
       let param = stuForm
+      param.age = parseFloat(param.age)
+
       if (props.type === 'add') {
-        stuForm.age = parseFloat(stuForm.age)
-        stuForm.gradeId = gradeList.value[0].id
+        param.gradeId = gradeList.value[0].id
       } else {
         url = api.updateStu
-        stuForm.age = parseFloat(stuForm.age)
-        // todo 此处用户记得修改
-        stuForm.value.user = 'admin'
-        param = stuForm.value
+        param.user = localStorage.getItem(storagekey.username)
       }
 
       post(url, param).then(res => {
@@ -275,10 +274,21 @@ const confirmAddStu = () => {
           confirmDialog()
           // 重置弹窗信息
           stuForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
-          ElMessage({message: res.msg, type: 'success'})
+          if (props.type === 'add') {
+            ElMessage({message: '新增成功', type: 'success'})
+          } else {
+            ElMessage({message: '修改成功', type: 'success'})
+          }
         } else {
-          ElMessage.error(res.msg)
+          if (props.type === 'add') {
+            ElMessage.error('新增失败')
+          } else {
+            ElMessage.error('修改失败')
+          }
         }
+      }).catch(err => {
+        console.error(err)
+        ElMessage.error('请求失败')
       })
     } else {
       return false
