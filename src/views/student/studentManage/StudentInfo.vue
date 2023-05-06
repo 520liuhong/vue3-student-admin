@@ -168,24 +168,31 @@ const addStu = () => {
  * @param list
  */
 const delStu = (e, list) => {
-  let ids = []
-  if (list && list.length > 0) {
-    ids = list
-  } else {
-    ids.push(e.id)
-  }
-
-  post(api.delStu, {ids: ids}).then(res => {
-    if (res.code === 200) {
-      if (list && list.length > 0) {
-        // 隐藏删除按钮
-        selectStuIdList = []
-      }
-      ElMessage({message: res.msg, type: 'success'})
-      initCollegeList()
+  ElMessageBox.confirm('此为删除操作, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    let ids = []
+    if (list && list.length > 0) {
+      ids = list
     } else {
-      ElMessage.error(res.msg)
+      ids.push(e.id)
     }
+
+    post(api.delStu, {ids: ids}).then(res => {
+      if (res.code === 200) {
+        if (list && list.length > 0) {
+          // 隐藏删除按钮
+          selectStuIdList = []
+        }
+        ElMessage({message: '删除成功', type: 'success'})
+        initCollegeList()
+      } else {
+        ElMessage.error('删除失败')
+      }
+    })
+  }).catch(() => {
   })
 }
 /**

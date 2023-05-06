@@ -84,7 +84,14 @@ const onSelectAll = (list) => {
 }
 /** 删除 */
 const onDel = (row) => {
-  $emit('onDel', row)
+  ElMessageBox.confirm('此为删除操作, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    $emit('onDel', row)
+  }).catch(() => {
+  })
 }
 /** 编辑 */
 const onEdit = (row) => {
