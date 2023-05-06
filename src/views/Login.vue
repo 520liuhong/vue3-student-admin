@@ -16,6 +16,8 @@
 <script setup>
 import {useRouter} from "vue-router";
 import {ref} from "vue";
+import {post} from "@/http/http";
+import {api} from "@/http/api";
 
 const router = useRouter()
 const loginInfo = ref({
@@ -24,7 +26,12 @@ const loginInfo = ref({
 })
 
 const login = () => {
-  router.push({path: '/index'})
+  // todo 待完善
+  post(api.system.login, loginInfo.value).then(res => {
+    if (res.code === 200) {
+      router.push({path: '/index'})
+    }
+  })
 }
 </script>
 

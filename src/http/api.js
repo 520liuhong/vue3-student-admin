@@ -21,5 +21,8 @@ export const api = {
         getClass: '/api/getClass',
         getTeacher: '/api/getTeacher',
         updateClass: '/api/updateClass'
+    },
+    system: {
+        login: '/api/login'
     }
 }
