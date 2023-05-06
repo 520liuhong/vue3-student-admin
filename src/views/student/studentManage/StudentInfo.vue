@@ -1,15 +1,18 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="na-header-btn-list">
       <el-button type="primary" @click="addStu">添 加</el-button>
       <div class="na-header-btn-list-right">
-        <el-button v-show="selectStuIdList.length>0" class="na-header-del-btn" type="danger" @click="delStu('', selectStuIdList)">删除</el-button>
+        <el-button v-show="selectStuIdList.length>0" class="na-header-del-btn" type="danger"
+                   @click="delStu('', selectStuIdList)">删除
+        </el-button>
         <el-input placeholder="请输入学号或名字" v-model="searchValue" clearable></el-input>
-        <el-button type="primary" @click="searchStu" >搜索</el-button>
+        <el-button type="primary" @click="searchStu">搜索</el-button>
       </div>
     </div>
 
-    <el-table :data="tableData" style="width: 100%" :header-cell-style="tableHeader" @select="selectStu" @select-all="selectAllStu">
+    <el-table :data="tableData" style="width: 100%" :header-cell-style="tableHeader" @select="selectStu"
+              @select-all="selectAllStu">
       <el-table-column type="selection" width="55" style="padding-left: -10px"></el-table-column>
       <template v-for="(item, index) in options" :key="index">
         <el-table-column :fixed="item.prop==='handel'?'right':null" :width="columnWidth(index)">
@@ -64,6 +67,9 @@ import {post} from "@/http/http";
 import {api} from "@/http/api";
 
 // data
+// loading加载
+let loading = ref(true)
+
 // 表头样式
 const tableHeader = {
   height: '50px',
@@ -113,18 +119,24 @@ onMounted(() => {
  * 获取表格数据
  */
 const initCollegeList = () => {
+  loading.value = true
   const param = {
     pageNo: currentPage.value,
     pageSize: pageSize.value
   }
   post(api.getStuInfo, param).then(res => {
     const data = res.data
-    if (data && data.length) {
-      tableData.value = data
-      total.value = res.total
+    if (res.code === 200) {
+      if (data && data.length) {
+        tableData.value = data
+        total.value = res.total
+      }
     }
+  }).finally(() => {
+    loading.value = false
   })
 }
+
 /**
  * 获取弹窗子组件
  * @param e
@@ -132,6 +144,7 @@ const initCollegeList = () => {
 function closeDialog(e) {
   dialogVisible.value = e.value
 }
+
 /**
  * 点击确定，关闭弹窗
  * @param e
@@ -140,6 +153,7 @@ function confirmDialog(e) {
   dialogVisible.value = e.value
   initCollegeList()
 }
+
 /**
  * 点击添加学生
  */
@@ -251,31 +265,26 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .na-header-btn-list {
   display: flex;
   justify-content: space-between;
   margin-bottom: 12px;
-}
 
-.na-header-btn-list-right {
-  display: flex;
-
-  .na-header-del-btn {
-    margin: 0 12px;
+  .el-button {
+    border-radius: 0;
   }
-}
 
-.na-header-btn-list .el-button {
-  border-radius: 0;
-}
+  .na-header-btn-list-right {
+    display: flex;
 
-.na-header-btn-list-right .el-input__wrapper {
-  border-radius: 0 !important;
-}
+    .el-input__wrapper {
+      border-radius: 0 !important;
+    }
 
-:deep .el-table__header-wrapper {
-  //border-top: 1px #eae8e8 solid;
-  //border-bottom: 1px #eae8e8 solid;
+    .na-header-del-btn {
+      margin: 0 12px;
+    }
+  }
 }
 </style>

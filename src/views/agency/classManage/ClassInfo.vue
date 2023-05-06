@@ -83,7 +83,8 @@ const onEdit = (e) => {
   dialogType.value = 'edit'
   dialogVisible.value = true
   editClassInfo.value = e
-}/** 获取弹窗子组件 */
+}
+/** 获取弹窗子组件 */
 function closeDialog(e) {
   dialogVisible.value = e
 }

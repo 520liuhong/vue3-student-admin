@@ -6,8 +6,13 @@
 -->
 <template>
   <div>
-    <el-table :data="props.tableData" style="width: 100%" :header-cell-style="tableHeader" @select="onSelect"
-              @select-all="onSelectAll">
+    <el-table
+        v-loading="loading"
+        :data="props.tableData"
+        style="width: 100%"
+        :header-cell-style="tableHeader"
+        @select="onSelect"
+        @select-all="onSelectAll">
       <el-table-column type="selection" width="55" style="padding-left: -10px"></el-table-column>
       <template v-for="(item, index) in options" :key="index">
         <el-table-column :fixed="item.prop==='handel'?'right':null" :min-width="item.width">
@@ -35,7 +40,7 @@
 </template>
 
 <script setup>
-import {defineProps} from "vue";
+import {defineProps, ref, watch} from "vue";
 
 /**
  * props
@@ -60,6 +65,13 @@ const tableHeader = {
   lineHeight: '50px',
   fontSize: '16px'
 }
+let loading = ref(true)
+
+watch(() => props.tableData, (newVal) => {
+  if (newVal) {
+    loading.value = false
+  }
+})
 
 // methods
 /** 单选或多选 */
