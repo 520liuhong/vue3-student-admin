@@ -258,7 +258,7 @@ const confirmAddStu = () => {
   stuFormRef.value.validate((valid) => {
     if (valid) {
       let url = api.addStu
-      let param = stuForm
+      let param = stuForm.value
       param.age = parseFloat(param.age)
 
       if (props.type === 'add') {
