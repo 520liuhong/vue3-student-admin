@@ -8,6 +8,20 @@
         @onSelect="selectClass"
         @onSelectAll="selectAllClass"
     />
+
+    <div style="display: flex;justify-content: center;">
+      <el-pagination
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :page-sizes="[10, 20, 40]"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :key="new Date().getTime()"
+      />
+    </div>
+
     <class-edit-dialog
         :type="dialogType"
         :dialogVisible="dialogVisible"
@@ -41,17 +55,28 @@ let dialogType = ref('add')
 let dialogVisible = ref(false)
 // 编辑班级信息时，携带的班级信息
 let editClassInfo = ref({})
+// 数据总条数
+let total = ref(0)
+// 当前页码
+const currentPage = ref(1)
+// 每页条数
+const pageSize = ref(10)
 
 onMounted(() => {
   getClassInfo()
 })
 
 const getClassInfo = () => {
-  post(api.agency.getClass).then(res => {
+  const param = {
+    pageNo: currentPage.value,
+    pageSize: pageSize.value
+  }
+  post(api.agency.getClass, param).then(res => {
     const data = res.data
     if (res.code === 200) {
       if (data && data.length) {
         tableData.value = data
+        total.value = res.total
       }
     }
   })
@@ -84,13 +109,24 @@ const onEdit = (e) => {
   dialogVisible.value = true
   editClassInfo.value = e
 }
+
 /** 获取弹窗子组件 */
 function closeDialog(e) {
   dialogVisible.value = e
 }
+
 /** 点击确定，关闭弹窗 */
 function confirmDialog(e) {
   dialogVisible.value = e
+  getClassInfo()
+}
+
+const handleSizeChange = (val) => {
+  pageSize.value = val
+  getClassInfo()
+}
+const handleCurrentChange = (val) => {
+  currentPage.value = val
   getClassInfo()
 }
 </script>

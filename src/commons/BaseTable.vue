@@ -7,6 +7,7 @@
 <template>
   <div>
     <el-table
+        height="488"
         v-loading="loading"
         :data="props.tableData"
         style="width: 100%"

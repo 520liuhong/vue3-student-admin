@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <el-table :data="tableData" style="width: 100%" :header-cell-style="tableHeader" @select="selectStu"
+    <el-table height="488" :data="tableData" style="width: 100%" :header-cell-style="tableHeader" @select="selectStu"
               @select-all="selectAllStu">
       <el-table-column type="selection" width="55" style="padding-left: -10px"></el-table-column>
       <template v-for="(item, index) in options" :key="index">
@@ -38,16 +38,18 @@
       </template>
     </el-table>
 
-    <el-pagination
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :page-sizes="[10, 20, 40]"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :key="new Date().getTime()"
-    />
+    <div style="display: flex;justify-content: center;">
+      <el-pagination
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :page-sizes="[10, 20, 40]"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :key="new Date().getTime()"
+      />
+    </div>
 
     <!--新增学生信息弹窗-->
     <student-info-dialog
