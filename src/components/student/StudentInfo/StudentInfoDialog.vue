@@ -182,9 +182,9 @@ onMounted(() => {
 const getAgeDate = (params) => {
   if (params) {
     const time = getTimeFromSomeDateToNow(params)
-    stuForm.age = time.year
+    stuForm.value.age = time.year
   } else {
-    stuForm.age = ''
+    stuForm.value.age = ''
   }
 }
 /**
@@ -208,7 +208,7 @@ const initCollegeList = (init) => {
       collegeList.value = data
       if (init) {
         classList.value = []
-        stuForm.classId = ''
+        stuForm.value.classId = ''
       }
     }
   })
@@ -225,9 +225,9 @@ const chooseCollege = (id, init) => {
       if (data && data.length) {
         specialtyList.value = data
         if (!init) {
-          stuForm.specialtyId = ''
+          stuForm.value.specialtyId = ''
           classList.value = []
-          stuForm.classId = ''
+          stuForm.value.classId = ''
         }
       }
     }
@@ -245,7 +245,7 @@ const chooseSpecialty = (id, init) => {
       if (data && data.length) {
         classList.value = data
         if (!init) {
-          stuForm.classId = ''
+          stuForm.value.classId = ''
         }
       }
     }
