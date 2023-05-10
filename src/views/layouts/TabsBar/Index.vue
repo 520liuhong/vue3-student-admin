@@ -176,7 +176,7 @@ export default {
 <style lang="scss" scoped>
 $width: 24px;
 .top-tabs-bar {
-  height: 60px;
+  height: 55px;
   //line-height: 60px;
   padding: 0 20px;
   background: #ffffff;

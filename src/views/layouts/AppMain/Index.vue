@@ -21,8 +21,8 @@ export default {
 .app-main-container {
   position: relative;
   width: calc(100% - 20px - 20px);
+  height: calc(100vh - 55px - 60px - 50px);
   margin: 20px auto;
-  overflow: hidden;
   border-radius: 4px;
 
   .vab-keel {
@@ -31,16 +31,12 @@ export default {
 
   .app-main-height {
     padding: 20px;
-    min-height: calc(
-        100vh - 60px - 60px - 20px -
-        20px - 55px - 55px
-    );
     background: #fff;
   }
 
   .footer-copyright {
-    min-height: 55px;
-    line-height: 55px;
+    min-height: 50px;
+    line-height: 50px;
     color: rgba(0, 0, 0, 0.45);
     text-align: center;
     border-top: 1px dashed #dcdfe6;
