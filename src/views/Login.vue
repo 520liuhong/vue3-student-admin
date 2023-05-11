@@ -18,6 +18,7 @@ import {useRouter} from "vue-router";
 import {ref} from "vue";
 import {post} from "@/http/http";
 import {api} from "@/http/api";
+import {storagekey} from "@/utils/constants";
 
 const router = useRouter()
 const loginInfo = ref({
@@ -29,6 +30,7 @@ const login = () => {
   // todo 待完善
   post(api.system.login, loginInfo.value).then(res => {
     if (res.code === 200) {
+      localStorage.setItem(storagekey.username, loginInfo.value.name)
       router.push({path: '/index'})
     }
   })

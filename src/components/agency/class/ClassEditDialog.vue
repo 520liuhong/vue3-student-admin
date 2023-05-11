@@ -16,29 +16,29 @@
           label-width="80px">
 
         <el-form-item label="年级" prop="grade">
-          <el-select v-model="classForm.gradeId" placeholder="请选择" @change="getGradeList">
+          <el-select v-model="classForm.gradeId" placeholder="请选择" @change="getGradeList" :disabled="type==='edit'">
             <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
 
         <el-form-item label="院系" prop="collegeId">
-          <el-select v-model="classForm.collegeId" placeholder="请选择" @change="chooseCollege">
+          <el-select v-model="classForm.collegeId" placeholder="请选择" @change="chooseCollege" :disabled="type==='edit'">
             <el-option v-for="item in collegeList" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
 
         <el-form-item label="专业" prop="specialtyId">
-          <el-select v-model="classForm.specialtyId" placeholder="请选择" @change="chooseSpecialty">
+          <el-select v-model="classForm.specialtyId" placeholder="请选择" @change="chooseSpecialty" :disabled="type==='edit'">
             <el-option v-for="item in specialtyList" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
 
         <el-form-item label="班级编号" prop="classId">
-          <el-input v-model="classForm.classId"/>
+          <el-input v-model="classForm.classId" :disabled="type==='edit'" />
         </el-form-item>
 
         <el-form-item label="班级名称" prop="class">
-          <el-input v-model="classForm.class"/>
+          <el-input v-model="classForm.class" :disabled="type==='edit'" />
         </el-form-item>
 
         <el-form-item label="班主任" prop="teacherId">
@@ -173,7 +173,6 @@ const chooseCollege = (id, init) => {
           teacherList.value = []
           classForm.value.teacherId = ''
         }
-        getTeacherList('college')
       }
     }
   })
