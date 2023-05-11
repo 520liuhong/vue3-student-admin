@@ -32,6 +32,7 @@ export default {
   .app-main-height {
     padding: 20px;
     background: #fff;
+    height: calc(100vh - 55px - 60px - 20px - 50px - 55px);
   }
 
   .footer-copyright {
