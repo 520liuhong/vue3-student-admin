@@ -1,5 +1,19 @@
 <template>
   <div>
+    <div class="na-header-btn-list">
+      <el-button type="primary" @click="addClass">添 加</el-button>
+      <div class="na-header-btn-list-right">
+        <el-button
+            v-show="tableData.length>0"
+            class="na-header-del-btn"
+            type="danger"
+            @click="onDel('', tableData)">删除
+        </el-button>
+        <el-input placeholder="请输入学号或名字" v-model="searchValue" clearable></el-input>
+        <el-button type="primary" @click="onSearch">搜索</el-button>
+      </div>
+    </div>
+
     <base-table
         :tableData="tableData"
         :options="options"
@@ -61,6 +75,8 @@ let total = ref(0)
 const currentPage = ref(1)
 // 每页条数
 const pageSize = ref(10)
+// 搜索框的值
+const searchValue = ref('')
 
 onMounted(() => {
   getClassInfo()
@@ -94,8 +110,36 @@ const selectClass = (list) => {
 const selectAllClass = (list) => {
   selectClass(list)
 }
-const onDel = (e) => {
+/** 删除班级 */
+const onDel = (e, list) => {
   console.log('删除获取信息', e)
+  ElMessageBox.confirm('此为删除操作, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    let ids = []
+    if (list && list.length > 0) {
+      ids = list
+    } else {
+      ids.push(e.id)
+    }
+    console.log('查看删除列表', ids)
+
+    // post(api.delStu, {ids: ids}).then(res => {
+    //   if (res.code === 200) {
+    //     if (list && list.length > 0) {
+    //       // 隐藏删除按钮
+    //       tableData.value = []
+    //     }
+    //     ElMessage({message: '删除成功', type: 'success'})
+    //     getClassInfo()
+    //   } else {
+    //     ElMessage.error('删除失败')
+    //   }
+    // })
+  }).catch(() => {
+  })
 }
 /** 点击添加班级 */
 const addClass = () => {
@@ -128,6 +172,23 @@ const handleSizeChange = (val) => {
 const handleCurrentChange = (val) => {
   currentPage.value = val
   getClassInfo()
+}
+
+/** 模糊搜索班级信息 */
+const onSearch = () => {
+  const param = {
+    q: searchValue.value,
+    pageNo: 1,
+    pageSize: pageSize.value
+  }
+  // post(api.getStuByNameOrId, param).then(res => {
+  //   if (res.code === 200) {
+  //     tableData.value = res.data
+  //     total.value = res.total
+  //   } else {
+  //     ElMessage.error(res.msg)
+  //   }
+  // })
 }
 </script>
 

@@ -66,6 +66,7 @@ import {reactive, ref, watchEffect} from "vue";
 import {useStore} from "vuex";
 import {ArrowRight} from '@element-plus/icons-vue'
 import {useRoute, useRouter} from "vue-router";
+import {storagekey} from "@/utils/constants";
 
 const store = useStore()
 const route = useRoute()
@@ -73,7 +74,11 @@ const router = useRouter()
 let closeSideBar = ref(true) // 左侧菜单栏展开收起标识
 let dialogVisible = ref(false) // 修改密码弹出框
 let pwdStuFormRef = ref(null) // 修改密码弹窗的实例
-const username = ref('admin') // 用户名称
+const username = ref(localStorage.getItem(storagekey.username)) // 用户名称
+
+if (!username.value) {
+  router.push({path: '/'})
+}
 
 let changePwdForm = reactive({
   oldPassword: '',
@@ -160,7 +165,7 @@ const logout = () => {
   }).then(() => {
     router.push({path: '/'})
     // 导航栏置为首页
-    store.commit('setNavTabs', [{path: "/index", meta: {title:'首页'}}])
+    store.commit('setNavTabs', [{path: "/index", meta: {title: '首页'}}])
   }).catch(() => {
 
   })

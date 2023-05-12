@@ -33,8 +33,8 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="班级编号" prop="classId">
-          <el-input v-model="classForm.classId" :disabled="type==='edit'" />
+        <el-form-item label="班级编号" prop="classId" v-if="type==='edit'">
+          <el-input v-model="classForm.classId" disabled/>
         </el-form-item>
 
         <el-form-item label="班级名称" prop="class">
@@ -83,7 +83,7 @@ let dialogVisible = ref(false)
 
 // data
 // 添加信息form
-const baseInfo = reactive({
+const baseInfo = ref({
   gradeId: '',
   collegeId: '',
   specialtyId: '',
@@ -150,7 +150,7 @@ const initCollegeList = (init) => {
       collegeList.value = data
       if (init) {
         classList.value = []
-        classForm.classId = ''
+        classForm.value.classId = ''
       }
     }
   })
@@ -188,7 +188,7 @@ const chooseSpecialty = (id, init) => {
     if (res.code === 200 && data) {
       classList.value = data
       if (!init) {
-        classForm.classId = ''
+        classForm.value.classId = ''
         classForm.value.teacherId = ''
       }
       getTeacherList('specialty')
@@ -223,11 +223,11 @@ const confirmAddClass = () => {
       let url = api.agency.addClass
       let param = classForm.value
 
+      param.user = localStorage.getItem(storagekey.username)
       if (props.type === 'add') {
         param.gradeId = gradeList.value[0].id
       } else {
         url = api.agency.updateClass
-        param.user = localStorage.getItem(storagekey.username)
       }
 
       post(url, param).then(res => {

@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <el-table height="488" :data="tableData" style="width: 100%" :header-cell-style="tableHeader" @select="selectStu"
+    <el-table height="488" :data="tableData" style="width: 100%;margin-bottom: 12px" :header-cell-style="tableHeader" @select="selectStu"
               @select-all="selectAllStu">
       <el-table-column type="selection" width="55" style="padding-left: -10px"></el-table-column>
       <template v-for="(item, index) in options" :key="index">
@@ -274,7 +274,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .na-header-btn-list {
   display: flex;
   justify-content: space-between;

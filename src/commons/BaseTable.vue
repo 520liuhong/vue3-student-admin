@@ -5,7 +5,7 @@
 @time: 2023-03-28 14:56:26
 -->
 <template>
-  <div>
+  <div style="margin-bottom: 12px">
     <el-table
         height="488"
         v-loading="loading"

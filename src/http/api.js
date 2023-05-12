@@ -20,7 +20,8 @@ export const api = {
     agency: {
         getClass: '/api/getClass',
         getTeacher: '/api/getTeacher',
-        updateClass: '/api/updateClass'
+        updateClass: '/api/updateClass',
+        addClass: '/api/addClass'
     },
     system: {
         login: '/api/login'
