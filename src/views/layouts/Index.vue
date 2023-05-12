@@ -2,12 +2,12 @@
   <div>
     <div class="na-layout">
       <el-container>
-        <el-aside width="200px" class="side-bar">
+        <el-aside :width="sideBarWidth + 'px'" class="side-bar">
           <side-bar></side-bar>
         </el-aside>
         <el-container>
           <el-main :class="store.state.isCollapse?'main-margin-collapse':'main-margin'">
-            <div class="na-main-top">
+            <div class="na-main-top" :style="topBarWidth">
               <tabs-bar></tabs-bar>
               <nav-bar></nav-bar>
             </div>
@@ -21,13 +21,21 @@
 
 <script setup>
 import {useStore} from "vuex";
-import {ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
 
 const store = useStore()
 let isCollapse = ref(store.state.isCollapse)
+const sideBarWidth = ref(store.state.sideBarWidth)
 
 watch(() => store.state.isCollapse, (newVal) => {
-  isCollapse.value = store.state.isCollapse
+  if (newVal) {
+    isCollapse.value = store.state.isCollapse
+  }
+})
+
+const topBarWidth = computed(() => {
+  const width = store.state.sideBarWidth || 0
+  return "width: calc(100% - " + width + "px)"
 })
 </script>
 <script>
