@@ -15,7 +15,7 @@
           label-position="left"
           label-width="80px">
 
-        <el-form-item label="年级" prop="grade">
+        <el-form-item label="年级" prop="gradeId">
           <el-select v-model="classForm.gradeId" placeholder="请选择" @change="getGradeList" :disabled="type==='edit'">
             <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
@@ -30,6 +30,12 @@
         <el-form-item label="专业" prop="specialtyId">
           <el-select v-model="classForm.specialtyId" placeholder="请选择" @change="chooseSpecialty" :disabled="type==='edit'">
             <el-option v-for="item in specialtyList" :key="item.id" :label="item.name" :value="item.id"/>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="班级列表" v-if="type === 'add'">
+          <el-select placeholder="查看班级列表">
+            <el-option v-for="item in classList" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
 
@@ -83,15 +89,15 @@ let dialogVisible = ref(false)
 
 // data
 // 添加信息form
-const baseInfo = ref({
+const baseInfo = {
   gradeId: '',
   collegeId: '',
   specialtyId: '',
   classId: '',
   class: '',
   teacherId: ''
-})
-let classForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
+}
+let classForm = ref(JSON.parse(JSON.stringify(baseInfo)))
 
 // form校验标准
 const classFormRules = reactive({
@@ -122,7 +128,7 @@ watch(() => props.dialogVisible, (newVal) => {
     chooseCollege(classForm.value.collegeId, 'init')
     chooseSpecialty(classForm.value.specialtyId, 'init')
   } else {
-    classForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
+    classForm = ref(JSON.parse(JSON.stringify(baseInfo)))
   }
 })
 
@@ -164,7 +170,7 @@ const chooseCollege = (id, init) => {
   post(api.getSpecialtyByCollege, {id: id}).then(res => {
     const data = res.data
     if (res.code === 200) {
-      if (data && data.length) {
+      if (data && data.length > 0) {
         specialtyList.value = data
         if (!init) {
           classForm.value.specialtyId = ''
@@ -173,6 +179,13 @@ const chooseCollege = (id, init) => {
           teacherList.value = []
           classForm.value.teacherId = ''
         }
+      } else {
+        classForm.value.specialtyId = ''
+        specialtyList.value = []
+        classList.value = []
+        classForm.value.classId = ''
+        teacherList.value = []
+        classForm.value.teacherId = ''
       }
     }
   })
