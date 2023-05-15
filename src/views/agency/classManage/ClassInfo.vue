@@ -4,10 +4,10 @@
       <el-button type="primary" @click="addClass">添 加</el-button>
       <div class="na-header-btn-list-right">
         <el-button
-            v-show="tableData.length>0"
+            v-show="selectCLassList.length>0"
             class="na-header-del-btn"
             type="danger"
-            @click="onDel('', tableData)">删除
+            @click="onDel('', selectCLassList)">删除
         </el-button>
         <el-input placeholder="请输入学号或名字" v-model="searchValue" clearable></el-input>
         <el-button type="primary" @click="onSearch">搜索</el-button>
@@ -77,6 +77,8 @@ const currentPage = ref(1)
 const pageSize = ref(10)
 // 搜索框的值
 const searchValue = ref('')
+// 选中班级
+let selectCLassList = ref([])
 
 onMounted(() => {
   getClassInfo()
@@ -104,6 +106,7 @@ const selectClass = (list) => {
     list.forEach(item => {
       arr.push(item.id)
     })
+    selectCLassList.value = arr
   }
 }
 /** 全选班级 */
@@ -112,33 +115,24 @@ const selectAllClass = (list) => {
 }
 /** 删除班级 */
 const onDel = (e, list) => {
-  console.log('删除获取信息', e)
-  ElMessageBox.confirm('此为删除操作, 是否继续?', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(() => {
-    let ids = []
-    if (list && list.length > 0) {
-      ids = list
-    } else {
-      ids.push(e.id)
-    }
-    console.log('查看删除列表', ids)
+  let ids = []
+  if (list && list.length > 0) {
+    ids = list
+  } else {
+    ids.push(e.id)
+  }
 
-    // post(api.delStu, {ids: ids}).then(res => {
-    //   if (res.code === 200) {
-    //     if (list && list.length > 0) {
-    //       // 隐藏删除按钮
-    //       tableData.value = []
-    //     }
-    //     ElMessage({message: '删除成功', type: 'success'})
-    //     getClassInfo()
-    //   } else {
-    //     ElMessage.error('删除失败')
-    //   }
-    // })
-  }).catch(() => {
+  post(api.agency.delClass, {ids: ids}).then(res => {
+    if (res.code === 200) {
+      if (list && list.length > 0) {
+        // 隐藏删除按钮
+        selectCLassList.value = []
+      }
+      ElMessage({message: '删除成功', type: 'success'})
+      getClassInfo()
+    } else {
+      ElMessage.error('删除失败')
+    }
   })
 }
 /** 点击添加班级 */
