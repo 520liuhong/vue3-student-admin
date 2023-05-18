@@ -106,7 +106,7 @@ let dialogVisible = ref(false)
 
 // data
 // 添加信息form
-const baseInfo = reactive({
+const baseInfo = {
   grade: '',
   name: '',
   stuId: '',
@@ -118,8 +118,8 @@ const baseInfo = reactive({
   collegeId: '',
   specialtyId: '',
   classId: ''
-})
-let stuForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
+}
+let stuForm = ref(JSON.parse(JSON.stringify(baseInfo)))
 
 // form校验标准
 const stuFormRules = reactive({
@@ -166,7 +166,7 @@ watch(() => props.dialogVisible, (newVal) => {
     chooseCollege(stuForm.value.collegeId, 'init')
     chooseSpecialty(stuForm.value.specialtyId, 'init')
   } else {
-    stuForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
+    stuForm = ref(JSON.parse(JSON.stringify(baseInfo)))
   }
 })
 
@@ -273,7 +273,7 @@ const confirmAddStu = () => {
           // 关闭弹窗
           confirmDialog()
           // 重置弹窗信息
-          stuForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
+          stuForm = ref(JSON.parse(JSON.stringify(baseInfo)))
           if (props.type === 'add') {
             ElMessage({message: '新增成功', type: 'success'})
           } else {

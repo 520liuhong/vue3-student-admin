@@ -1,18 +1,10 @@
 <template>
   <div>
-    <div class="na-header-btn-list">
-      <el-button type="primary" @click="addClass">添 加</el-button>
-      <div class="na-header-btn-list-right">
-        <el-button
-            v-show="selectCLassList.length>0"
-            class="na-header-del-btn"
-            type="danger"
-            @click="onDel('', selectCLassList)">删除
-        </el-button>
-        <el-input placeholder="请输入学号或名字" v-model="searchValue" clearable></el-input>
-        <el-button type="primary" @click="onSearch">搜索</el-button>
-      </div>
-    </div>
+    <main-header
+        :selectIdList="selectCLassList"
+        @onAdd="addClass"
+        @onDel="onDel('', selectCLassList)"
+        @onSearch="onSearch"/>
 
     <base-table
         :tableData="tableData"
@@ -75,8 +67,6 @@ let total = ref(0)
 const currentPage = ref(1)
 // 每页条数
 const pageSize = ref(10)
-// 搜索框的值
-const searchValue = ref('')
 // 选中班级
 let selectCLassList = ref([])
 
@@ -169,9 +159,9 @@ const handleCurrentChange = (val) => {
 }
 
 /** 模糊搜索班级信息 */
-const onSearch = () => {
+const onSearch = (e) => {
   const param = {
-    q: searchValue.value,
+    q: e,
     pageNo: 1,
     pageSize: pageSize.value
   }
@@ -187,11 +177,11 @@ const onSearch = () => {
 </script>
 
 <script>
+import mainHeader from "@/components/baseComponents/mainHeader";
 export default {
-  name: "ClassInfo"
+  name: "ClassInfo",
+  components: {
+    mainHeader
+  }
 }
 </script>
-
-<style scoped>
-
-</style>

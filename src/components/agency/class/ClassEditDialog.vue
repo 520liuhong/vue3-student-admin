@@ -249,7 +249,7 @@ const confirmAddClass = () => {
           dialogVisible.value = false
           $emit('confirmDialog', false)
           // 重置弹窗信息
-          classForm = reactive(JSON.parse(JSON.stringify(baseInfo)))
+          classForm = ref(JSON.parse(JSON.stringify(baseInfo)))
 
           if (props.type === 'add') {
             ElMessage({message: '新增成功', type: 'success'})

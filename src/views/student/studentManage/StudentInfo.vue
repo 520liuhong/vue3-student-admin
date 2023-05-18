@@ -1,15 +1,10 @@
 <template>
   <div v-loading="loading">
-    <div class="na-header-btn-list">
-      <el-button type="primary" @click="addStu">添 加</el-button>
-      <div class="na-header-btn-list-right">
-        <el-button v-show="selectStuIdList.length>0" class="na-header-del-btn" type="danger"
-                   @click="delStu('', selectStuIdList)">删除
-        </el-button>
-        <el-input placeholder="请输入学号或名字" v-model="searchValue" clearable></el-input>
-        <el-button type="primary" @click="searchStu">搜索</el-button>
-      </div>
-    </div>
+    <main-header
+        :selectIdList="selectStuIdList"
+        @onAdd="addStu"
+        @onDel="delStu('', selectStuIdList)"
+        @onSearch="searchStu"/>
 
     <el-table height="488" :data="tableData" style="width: 100%;margin-bottom: 12px" :header-cell-style="tableHeader" @select="selectStu"
               @select-all="selectAllStu">
@@ -91,8 +86,6 @@ let editStuInfo = ref({})
 let total = ref(0)
 // 选中学生列表
 let selectStuIdList = ref([])
-// 搜索框的值
-const searchValue = ref('')
 // 当前页码
 const currentPage = ref(1)
 // 每页条数
@@ -229,9 +222,9 @@ const editStu = (e) => {
 /**
  * 模糊搜索学生信息
  */
-const searchStu = () => {
+const searchStu = (e) => {
   const param = {
-    q: searchValue.value,
+    q: e,
     pageNo: 1,
     pageSize: pageSize.value
   }
@@ -269,31 +262,11 @@ const getSex = (e) => {
 
 </script>
 <script>
+import mainHeader from "@/components/baseComponents/mainHeader";
 export default {
-  name: 'StudentInfo'
+  name: 'StudentInfo',
+  components: {
+    mainHeader
+  }
 }
 </script>
-
-<style lang="scss">
-.na-header-btn-list {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 12px;
-
-  .el-button {
-    border-radius: 0;
-  }
-
-  .na-header-btn-list-right {
-    display: flex;
-
-    .el-input__wrapper {
-      border-radius: 0 !important;
-    }
-
-    .na-header-del-btn {
-      margin: 0 12px;
-    }
-  }
-}
-</style>
