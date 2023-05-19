@@ -4,7 +4,7 @@
         :selectIdList="selectCLassList"
         @onAdd="addClass"
         @onDel="onDel('', selectCLassList)"
-        @onSearch="onSearch"/>
+        @onSearch="onSearch" />
 
     <base-table
         :tableData="tableData"
@@ -165,14 +165,16 @@ const onSearch = (e) => {
     pageNo: 1,
     pageSize: pageSize.value
   }
-  // post(api.getStuByNameOrId, param).then(res => {
-  //   if (res.code === 200) {
-  //     tableData.value = res.data
-  //     total.value = res.total
-  //   } else {
-  //     ElMessage.error(res.msg)
-  //   }
-  // })
+  post(api.agency.getClass, param).then(res => {
+    const data = res.data
+    if (res.code === 200) {
+      tableData.value = data
+      total.value = res.total
+    } else {
+      tableData.value = []
+      total.value = 0
+    }
+  })
 }
 </script>
 
