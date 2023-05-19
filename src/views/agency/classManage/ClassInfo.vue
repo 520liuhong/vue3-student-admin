@@ -1,9 +1,9 @@
 <template>
   <div>
     <main-header
-        :selectIdList="selectCLassList"
+        :selectIdList="selectClassList"
         @onAdd="addClass"
-        @onDel="onDel('', selectCLassList)"
+        @onDel="onDel('', selectClassList)"
         @onSearch="onSearch" />
 
     <base-table
@@ -68,7 +68,7 @@ const currentPage = ref(1)
 // 每页条数
 const pageSize = ref(10)
 // 选中班级
-let selectCLassList = ref([])
+let selectClassList = ref([])
 
 onMounted(() => {
   getClassInfo()
@@ -96,7 +96,7 @@ const selectClass = (list) => {
     list.forEach(item => {
       arr.push(item.id)
     })
-    selectCLassList.value = arr
+    selectClassList.value = arr
   }
 }
 /** 全选班级 */
@@ -116,7 +116,7 @@ const onDel = (e, list) => {
     if (res.code === 200) {
       if (list && list.length > 0) {
         // 隐藏删除按钮
-        selectCLassList.value = []
+        selectClassList.value = []
       }
       ElMessage({message: '删除成功', type: 'success'})
       getClassInfo()
