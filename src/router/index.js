@@ -82,7 +82,7 @@ const routes = [
       },
       {
         path: '/agency',
-        name: 'Admin',
+        name: 'Agency',
         meta: { title: '机构', icon: 'iconfont icon-admin' },
         component: () => import('../views/agency/Index'),
         children: [
