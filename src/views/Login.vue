@@ -6,7 +6,7 @@
       </div>
       <div class="login-content-bottom">
         <el-input class="login-input" auto-complete="new-password" v-model="loginInfo.name"></el-input>
-        <el-input class="login-input" auto-complete="new-password" type="password" v-model="loginInfo.password"></el-input>
+        <el-input class="login-input" auto-complete="new-password" type="password" v-model="loginInfo.password" @keyup.enter="login"></el-input>
         <el-button class="login-btn" @click="login">登录</el-button>
       </div>
     </div>
