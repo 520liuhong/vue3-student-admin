@@ -64,7 +64,7 @@ const routes = [
             path: '/userManagement',
             name: 'UserManagement',
             meta: { title: '用户管理' },
-            component: () => import('../views/admin/User')
+            component: () => import('../views/admin/Admin')
           },
           {
             path: '/roleManagement',

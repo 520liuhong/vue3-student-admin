@@ -22,7 +22,7 @@ import {ref} from "vue";
 const props = defineProps({
   selectIdList: {
     type: Array,
-    // default: []
+    default () { return [] }
   }
 })
 /** data */

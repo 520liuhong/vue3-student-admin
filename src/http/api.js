@@ -15,7 +15,8 @@ export const api = {
     updateStu: '/api/updateStu',
     getGrade: '/api/getGrade',
     admin: {
-        getAdminInfo: '/api/getAdminInfo'
+        getAdminInfo: '/api/getAdminInfo',
+        getRoleList: '/api/getRoleList'
     },
     agency: {
         getClass: '/api/getClass',

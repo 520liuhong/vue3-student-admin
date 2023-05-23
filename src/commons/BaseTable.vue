@@ -15,19 +15,19 @@
         @select="onSelect"
         @select-all="onSelectAll">
       <el-table-column type="selection" width="55" style="padding-left: -10px"></el-table-column>
-      <template v-for="(item, index) in options" :key="index">
+      <!--使用prop作为键值，是避免列表间距重复点击时变大-->
+      <template v-for="item in options" :key="item.prop">
         <el-table-column :fixed="item.prop==='handel'?'right':null" :min-width="item.width">
           <template #header>
             <div :style="{'text-align':item.prop==='handel'?'center':''}">{{ item.label }}</div>
           </template>
           <template #default="scope">
             <div v-if="item.prop !== 'handel'">
-              <span>
-                <span v-if="scope.row[item.prop] !== ''&&scope.row[item.prop] !== null">
-                  {{ scope.row[item.prop] }}
-                </span>
-                <span v-else>-</span>
+              <span v-if="scope.row[item.prop] !== ''&&scope.row[item.prop] !== null">
+                <el-switch v-if="item.switch" v-model="scope.row.status" @change="onChange(scope.row)" />
+                <span v-else>{{ scope.row[item.prop] }}</span>
               </span>
+              <span v-else>-</span>
             </div>
             <div v-else style="text-align: center;">
               <el-button link type="primary" @click="onDel(scope.row)">删除</el-button>
@@ -97,6 +97,9 @@ const onDel = (row) => {
 /** 编辑 */
 const onEdit = (row) => {
   $emit('onEdit', row)
+}
+const onChange = (e) => {
+  $emit('onChange', e)
 }
 </script>
 
