@@ -120,41 +120,42 @@ const closeDialog = () => {
 const confirmAdd = () => {
   myFormRef.value.validate((valid) => {
     if (valid) {
-      let url = api.agency.addClass
+      let url = api.admin.addAdmin
       let param = myForm.value
+      param.currentRole = 1
 
       param.user = localStorage.getItem(storagekey.username)
-      console.log('查看参数', param)
       // if (props.type === 'add') {
       //   param.gradeId = gradeList.value[0].id
       // } else {
       //   url = api.agency.updateClass
       // }
 
-      // post(url, param).then(res => {
-      //   if (res.code === 200) {
-      //     // 关闭弹窗
-      //     dialogVisible.value = false
-      //     $emit('confirmDialog', false)
-      //     // 重置弹窗信息
-      //     myForm = ref(JSON.parse(JSON.stringify(baseInfo)))
-      //
-      //     if (props.type === 'add') {
-      //       ElMessage({message: '新增成功', type: 'success'})
-      //     } else {
-      //       ElMessage({message: '修改成功', type: 'success'})
-      //     }
-      //   } else {
-      //     if (props.type === 'add') {
-      //       ElMessage.error('新增失败')
-      //     } else {
-      //       ElMessage.error('修改失败')
-      //     }
-      //   }
-      // }).catch(err => {
-      //   console.error(err)
-      //   ElMessage.error('请求失败')
-      // })
+      post(url, param).then(res => {
+        // console.log('查看res', res)
+        if (res.code === 200) {
+          // 关闭弹窗
+          dialogVisible.value = false
+          $emit('confirmDialog', false)
+          // 重置弹窗信息
+          myForm = ref(JSON.parse(JSON.stringify(baseInfo)))
+
+          if (props.type === 'add') {
+            ElMessage({message: '新增成功', type: 'success'})
+          } else {
+            ElMessage({message: '修改成功', type: 'success'})
+          }
+        } else {
+          if (props.type === 'add') {
+            ElMessage.error('新增失败')
+          } else {
+            ElMessage.error('修改失败')
+          }
+        }
+      }).catch(err => {
+        console.error(err)
+        ElMessage.error('请求失败')
+      })
     } else {
       return false
     }
