@@ -5,7 +5,7 @@
 -->
 <template>
   <div>
-    <main-header @onAdd="createAdmin" @onSearch="onSearch" />
+    <main-header @onAdd="createAdmin" @onSearch="onSearch"/>
 
     <el-table
         height="488"
@@ -22,7 +22,7 @@
           <template #default="scope">
             <div v-if="item.prop !== 'handel'">
               <span v-if="scope.row[item.prop] !== ''&&scope.row[item.prop] !== null">
-                <el-switch v-if="item.switch" v-model="scope.row.status1" @change="onChange(scope.row)" />
+                <el-switch v-if="item.switch" v-model="scope.row.status1" @change="onChange(scope.row)"/>
                 <span v-else>{{ scope.row[item.prop] }}</span>
               </span>
               <span v-else>-</span>
@@ -44,18 +44,18 @@
         @confirmDialog="confirmDialog"
     />
 
-<!--    <div style="display: flex;justify-content: center;">-->
-<!--      <el-pagination-->
-<!--          :current-page="currentPage"-->
-<!--          :page-size="pageSize"-->
-<!--          :page-sizes="[10, 20, 40]"-->
-<!--          layout="total, sizes, prev, pager, next, jumper"-->
-<!--          :total="total"-->
-<!--          @size-change="handleSizeChange"-->
-<!--          @current-change="handleCurrentChange"-->
-<!--          :key="new Date().getTime()"-->
-<!--      />-->
-<!--    </div>-->
+    <!--    <div style="display: flex;justify-content: center;">-->
+    <!--      <el-pagination-->
+    <!--          :current-page="currentPage"-->
+    <!--          :page-size="pageSize"-->
+    <!--          :page-sizes="[10, 20, 40]"-->
+    <!--          layout="total, sizes, prev, pager, next, jumper"-->
+    <!--          :total="total"-->
+    <!--          @size-change="handleSizeChange"-->
+    <!--          @current-change="handleCurrentChange"-->
+    <!--          :key="new Date().getTime()"-->
+    <!--      />-->
+    <!--    </div>-->
   </div>
 </template>
 
@@ -121,7 +121,6 @@ const initData = () => {
           item.role1 = getNameByRoleId(item.role)
           item.status1 = getStatusOfRole(item.status)
         })
-        console.log('打印数据', data)
         tableData.value = data
         total.value = res.total
       }
@@ -130,19 +129,21 @@ const initData = () => {
 }
 /** 删除管理员 */
 const onDel = (e) => {
-  console.log('删除前参数', e.id)
-  // post(api.agency.delClass, {ids: [e.id]}).then(res => {
-  //   if (res.code === 200) {
-  //     if (list && list.length > 0) {
-  //       // 隐藏删除按钮
-  //       // selectList.value = []
-  //     }
-  //     ElMessage({message: '删除成功', type: 'success'})
-  //     initData()
-  //   } else {
-  //     ElMessage.error('删除失败')
-  //   }
-  // })
+  ElMessageBox.confirm('此为删除操作, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    post(api.admin.delAdmin, {ids: e.id}).then(res => {
+      if (res.code === 200) {
+        ElMessage({message: '删除成功', type: 'success'})
+        initData()
+      } else {
+        ElMessage.error('删除失败')
+      }
+    })
+  }).catch(() => {
+  })
 }
 /** 点击添加管理员 */
 const createAdmin = () => {
@@ -204,6 +205,7 @@ const onSearch = (e) => {
 <script>
 import mainHeader from "@/components/baseComponents/mainHeader";
 import AdminEditDialog from "@/components/agency/class/AdminEditDialog";
+
 export default {
   name: "AdminInfo",
   components: {

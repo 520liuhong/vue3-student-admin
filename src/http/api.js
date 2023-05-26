@@ -17,7 +17,8 @@ export const api = {
     admin: {
         getAdminInfo: '/api/getAdminInfo',
         getRoleList: '/api/getRoleList',
-        addAdmin: '/api/addAdmin'
+        addAdmin: '/api/addAdmin',
+        delAdmin: '/api/delAdmin'
     },
     agency: {
         getClass: '/api/getClass',
