@@ -39,10 +39,10 @@ const topBarWidth = computed(() => {
 })
 </script>
 <script>
-import SideBar from '@/views/layouts/SideBar/Index'
-import NavBar from '@/views/layouts/NavBar/Index'
-import TabsBar from '@/views/layouts/TabsBar/Index'
-import AppMain from '@/views/layouts/AppMain/Index'
+import SideBar from '@/layouts/SideBar/Index'
+import NavBar from '@/layouts/NavBar/Index'
+import TabsBar from '@/layouts/TabsBar/Index'
+import AppMain from '@/layouts/AppMain/Index'
 
 export default {
   name: "Layout",

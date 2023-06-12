@@ -1,6 +1,6 @@
 <template>
   <div class="app-main-container">
-    <router-view class="app-main-height"/>
+    <router-view class="app-main-height" :key="key" />
     <footer class="footer-copyright">
       Copyright
       一叶知秋 {{ fullYear }}
@@ -13,7 +13,15 @@ const fullYear = new Date().getFullYear()
 </script>
 <script>
 export default {
-  name: 'AppMain'
+  name: 'AppMain',
+  computed: {
+    cachedViews() {
+      return this.$store.state.tagsView.cachedViews
+    },
+    key() {
+      return this.$route.path
+    }
+  }
 }
 </script>
 

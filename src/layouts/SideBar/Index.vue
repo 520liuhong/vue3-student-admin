@@ -17,24 +17,21 @@
         <span>图</span>
         <span v-show="!isCollapse">学生管理系统</span>
       </div>
-      <div v-for="(item, index) in routes" :index="index+''" :key="index">
-        <div v-for="item2 in item.children" :key="item2.path">
-          <el-sub-menu v-if="item2.children" :index="item2.path">
-            <template v-slot:title>
-              <i :class="item2.meta.icon" style="margin-right: 6px"></i>
-              <span v-show="!isCollapse">{{ item2.meta.title }}</span>
-            </template>
-            <el-menu-item v-for="item3 in item2.children" :index="item3.path" :key="item3.path"
-                          @click="clickPath(item3)">
-              {{ item3.meta.title }}
-            </el-menu-item>
-          </el-sub-menu>
-          <!--首页-->
-          <el-menu-item v-else :index="item2.path">
-            <i :class="item2.meta.icon" style="margin-right: 6px"></i>
-            <span v-show="!isCollapse">{{ item2.meta.title }}</span>
+      <div v-for="(item, index) in routes" :index="item.path" :key="index">
+        <el-sub-menu v-if="item.children && !item.meta.home" :index="item.path">
+          <template v-slot:title>
+            <i :class="item.meta.icon" style="margin-right: 6px"></i>
+            <span v-show="!isCollapse">{{ item.meta.title }}</span>
+          </template>
+          <el-menu-item v-for="item3 in item.children" :index="item3.path" :key="item3.path" @click="clickPath(item3)">
+            {{ item3.meta.title }}
           </el-menu-item>
-        </div>
+        </el-sub-menu>
+        <!--首页-->
+        <el-menu-item v-else-if="item.meta && item.meta.home" :index="item.path">
+          <i :class="item.meta.icon" style="margin-right: 6px"></i>
+          <span v-show="!isCollapse">{{ item.meta.title }}</span>
+        </el-menu-item>
       </div>
     </el-menu>
   </div>
@@ -51,6 +48,7 @@ const route = useRoute()
 const clickItem = ref({})
 
 const routes = router.options.routes
+console.log('routes', routes)
 let isCollapse = ref(store.state.isCollapse)
 
 watch(() => store.state.isCollapse, (newVal) => {
