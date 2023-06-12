@@ -178,7 +178,6 @@ const handleCurrentChange = (val) => {
   initData()
 }
 const onChange = (e) => {
-  console.log('change', e)
   // 请求接口，修改管理员状态，0禁用（不可登录账号），1启用
 }
 

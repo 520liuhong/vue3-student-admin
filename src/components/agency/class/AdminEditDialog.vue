@@ -132,7 +132,6 @@ const confirmAdd = () => {
       // }
 
       post(url, param).then(res => {
-        // console.log('查看res', res)
         if (res.code === 200) {
           // 关闭弹窗
           dialogVisible.value = false

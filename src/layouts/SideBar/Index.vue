@@ -48,7 +48,6 @@ const route = useRoute()
 const clickItem = ref({})
 
 const routes = router.options.routes
-console.log('routes', routes)
 let isCollapse = ref(store.state.isCollapse)
 
 watch(() => store.state.isCollapse, (newVal) => {
