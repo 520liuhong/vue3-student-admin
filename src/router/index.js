@@ -1,8 +1,10 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Layout from "@/layouts/Index"
-import login from "@/views/Login";
+import {createRouter, createWebHistory} from 'vue-router'
+import Layout from '@/layouts/Index'
+import login from '@/views/Login'
+import {menu} from '@/router/mockData'
+import {filterAsyncRouter} from '@/router/permission'
 
-const routes = [
+let routes = [
   {
     path: '/',
     name: 'login',
@@ -13,91 +15,19 @@ const routes = [
     name: 'Layout',
     component: Layout,
     redirect: '/index',
-    meta: { title: '首页', icon: 'iconfont icon-home', home: true },
+    meta: {title: '首页', icon: 'iconfont icon-home', home: true},
     children: [
       {
         path: '/index',
         name: 'Index',
         component: () => import('@/views/Index'),
-        meta: { title: '首页', icon: 'iconfont icon-home', home: true }
-      }
-    ]
-  },
-  {
-    path: '/student',
-    name: 'Student',
-    meta: { title: '学生管理', icon: 'iconfont icon-student' },
-    component: Layout,
-    children: [
-      {
-        path: '/studentManage',
-        name: 'Student1',
-        meta: { title: '学生信息管理' },
-        component: () => import('../views/student/StudentInfo'),
-      },
-      {
-        path: '/student2',
-        name: 'Student2',
-        meta: { title: '学生2' },
-        component: () => import('../views/student/Student2')
-      }
-    ]
-  },
-  {
-    path: '/teacher',
-    name: 'Teacher',
-    meta: { title: '教师管理', icon: 'iconfont icon-teacher' },
-    component: Layout,
-    children: [
-      {
-        path: '/teacher1',
-        name: 'Teacher1',
-        meta: { title: '教师' },
-        component: () => import('../views/teacher/teacher1')
-      }
-    ]
-  },
-  {
-    path: '/admin',
-    name: 'Admin',
-    meta: { title: '管理员', icon: 'iconfont icon-admin' },
-    component: Layout,
-    children: [
-      {
-        path: '/userManagement',
-        name: 'UserManagement',
-        meta: { title: '用户管理' },
-        component: () => import('../views/admin/Admin')
-      },
-      {
-        path: '/roleManagement',
-        name: 'RoleManagement',
-        meta: { title: '角色管理' },
-        component: () => import('../views/admin/Role')
-      },
-      {
-        path: '/authorityManagement',
-        name: 'AuthorityManagement',
-        meta: { title: '权限管理' },
-        component: () => import('../views/admin/Authority')
-      }
-    ]
-  },
-  {
-    path: '/agency',
-    name: 'Agency',
-    meta: { title: '机构', icon: 'iconfont icon-admin' },
-    component: Layout,
-    children: [
-      {
-        path: '/classManagement',
-        name: 'ClassManagement',
-        meta: { title: '班级管理' },
-        component: () => import('../views/agency/classManage/ClassInfo')
+        meta: {title: '首页', icon: 'iconfont icon-home', home: true}
       }
     ]
   }
 ]
+const rewriteRoutes = filterAsyncRouter(menu)
+routes = routes.concat(rewriteRoutes)
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
