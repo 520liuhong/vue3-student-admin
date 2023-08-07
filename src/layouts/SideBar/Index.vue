@@ -32,7 +32,7 @@
 
             <!--有三级菜单-->
             <div v-if="item2.children">
-              <el-sub-menu >
+              <el-sub-menu :index="item2.path">
                 <template #title>{{ item2.meta.title }}</template>
                 <el-menu-item v-for="item3 in item2.children" :index="item3.path" :key="item3.path" @click="clickPath(item3)">
                   {{ item3.meta.title }}
@@ -42,7 +42,7 @@
           </div>
         </el-sub-menu>
         <!--首页-->
-        <el-menu-item v-else-if="item.meta && item.meta.home" :index="item.path">
+        <el-menu-item v-else-if="item.meta && item.meta.home" index="/index">
           <i :class="item.meta.icon" style="margin-right: 6px"></i>
           <span v-show="!isCollapse">{{ item.meta.title }}</span>
         </el-menu-item>
@@ -62,7 +62,6 @@ const route = useRoute()
 const clickItem = ref({})
 
 const routes = router.options.routes
-console.log('打印routes', routes)
 let isCollapse = ref(store.state.isCollapse)
 
 watch(() => store.state.isCollapse, (newVal) => {
