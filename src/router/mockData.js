@@ -86,13 +86,13 @@ export const menu = [
                 component: '',
                 children: [
                     {
-                        path: '/menu11',
+                        path: '/menu1/menu11',
                         name: 'Menu11',
                         meta: { title: '三级菜单1' },
                         component: '/moreMenu/menu1/menu11'
                     },
                     {
-                        path: '/menu12',
+                        path: '/menu1/menu12',
                         name: 'Menu12',
                         meta: { title: '三级菜单2' },
                         component: '/moreMenu/menu1/menu12'
