@@ -104,6 +104,12 @@ export const menu = [
                 name: 'menu2',
                 meta: { title: '二级菜单2' },
                 component: '/moreMenu/menu2/menu21'
+            },
+            {
+                path: '/moreMenu/gantt',
+                name: 'gantt',
+                meta: { title: '甘特图' },
+                component: '/moreMenu/gantt/ganttCharts'
             }
         ]
     }
