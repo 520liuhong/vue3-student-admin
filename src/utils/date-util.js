@@ -3,6 +3,7 @@
  * @author: newhome
  * @date: 2023-03-22 10:03:56
  */
+import _ from 'lodash'
 
 /**
  * 计算 传入时间距离当前多少年
@@ -78,4 +79,18 @@ export function lastDay(mo, year) {
  */
 export function isLeapYear(Year) {
     return (Year % 4 === 0 && Year % 100 !== 0) || Year % 400 === 0
+}
+
+/**
+ * 计算两个日期间相差多少天
+ * @param date
+ * @param otherDate
+ * @returns {number}
+ */
+export function diffDays (date, otherDate) {
+    if (date && otherDate) {
+        const date1 = _.cloneDeep(new Date(date))
+        const otherDate1 = _.cloneDeep(new Date(otherDate))
+        return Math.ceil(Math.abs(date1 - otherDate1) / (1000 * 60 * 60 * 24))
+    }
 }

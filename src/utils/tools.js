@@ -27,3 +27,27 @@ export function getStatusOfRole (status) {
         }
     }
 }
+
+/** 创建一个随机字符串 */
+export function randomString () {
+    // 例：gi1qtdego0b
+    return Math.random().toString(36).slice(2)
+}
+
+/** 单词首字母大写 */
+export function uppercaseWords (str) {
+    // 例：传入str = 'hello world'，返回'Hello World'
+    return str.replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())
+}
+
+/** 将字符串转换为小驼峰 */
+export function toCamelCase (str) {
+    return str.trim().replace(/[-_\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''))
+}
+
+/** 删除一维数组中的重复值 */
+export function removeDuplicates (arr) {
+    // 调用：removeDuplicates([1, 2, 2, 3, 3, 4, 4, 5, 5, 6])
+    // 返回：[1, 2, 3, 4, 5, 6]
+    return [...new Set(arr)]
+}
