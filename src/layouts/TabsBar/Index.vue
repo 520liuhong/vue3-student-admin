@@ -29,7 +29,7 @@
             <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
             <el-dropdown-item command="changeTheme">
               <span>暗黑模式</span>
-              <el-switch v-model="isDark" size="large" class="mt-2" style="margin-left: 24px" inline-prompt />
+              <el-switch v-model="isDark" size="large" class="mt-2" style="margin-left: 24px" inline-prompt/>
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -71,7 +71,7 @@ import {useStore} from "vuex";
 import {ArrowRight} from '@element-plus/icons-vue'
 import {useRoute, useRouter} from "vue-router";
 import {storagekey} from "@/utils/constants";
-import { useDark, useToggle } from '@vueuse/core'
+import {useDark, useToggle} from '@vueuse/core'
 
 const store = useStore()
 const route = useRoute()

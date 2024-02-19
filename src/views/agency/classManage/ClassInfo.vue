@@ -4,7 +4,7 @@
         :selectIdList="selectClassList"
         @onAdd="addClass"
         @onDel="onDel('', selectClassList)"
-        @onSearch="onSearch" />
+        @onSearch="onSearch"/>
 
     <base-table
         :tableData="tableData"
@@ -180,6 +180,7 @@ const onSearch = (e) => {
 
 <script>
 import mainHeader from "@/components/baseComponents/mainHeader";
+
 export default {
   name: "ClassInfo",
   components: {

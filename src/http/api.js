@@ -5,29 +5,29 @@
  */
 
 export const api = {
-    getStuInfo: '/api/getStuInfo',
-    getSpecialtyByCollege: '/api/getSpecialtyByCollege',
-    getClassBySpecialty: '/api/getClassBySpecialty',
-    getAllCollege: '/api/getAllCollege',
-    addStu: '/api/addStu',
-    getStuByNameOrId: '/api/getStuByNameOrId',
-    delStu: '/api/delStu',
-    updateStu: '/api/updateStu',
-    getGrade: '/api/getGrade',
-    admin: {
-        getAdminInfo: '/api/getAdminInfo',
-        getRoleList: '/api/getRoleList',
-        addAdmin: '/api/addAdmin',
-        delAdmin: '/api/delAdmin'
-    },
-    agency: {
-        getClass: '/api/getClass',
-        getTeacher: '/api/getTeacher',
-        updateClass: '/api/updateClass',
-        addClass: '/api/addClass',
-        delClass: 'api/delClass'
-    },
-    system: {
-        login: '/api/login'
-    }
+  getStuInfo: '/api/getStuInfo',
+  getSpecialtyByCollege: '/api/getSpecialtyByCollege',
+  getClassBySpecialty: '/api/getClassBySpecialty',
+  getAllCollege: '/api/getAllCollege',
+  addStu: '/api/addStu',
+  getStuByNameOrId: '/api/getStuByNameOrId',
+  delStu: '/api/delStu',
+  updateStu: '/api/updateStu',
+  getGrade: '/api/getGrade',
+  admin: {
+    getAdminInfo: '/api/getAdminInfo',
+    getRoleList: '/api/getRoleList',
+    addAdmin: '/api/addAdmin',
+    delAdmin: '/api/delAdmin'
+  },
+  agency: {
+    getClass: '/api/getClass',
+    getTeacher: '/api/getTeacher',
+    updateClass: '/api/updateClass',
+    addClass: '/api/addClass',
+    delClass: 'api/delClass'
+  },
+  system: {
+    login: '/api/login'
+  }
 }

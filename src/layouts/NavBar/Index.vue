@@ -78,7 +78,7 @@ const handleTabRemove = (path) => {
   if (key > -1) {
     visitedRoutes.value.splice(key, 1)
     // 因为首页的tabs不能被删除，所以删除只能向前一个跳转，不能向后跳转
-    const item = visitedRoutes.value[key-1]
+    const item = visitedRoutes.value[key - 1]
 
     router.push({
       path: item.path,

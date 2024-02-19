@@ -34,7 +34,8 @@
             <div v-if="item2.children">
               <el-sub-menu :index="item2.path">
                 <template #title>{{ item2.meta.title }}</template>
-                <el-menu-item v-for="item3 in item2.children" :index="item3.path" :key="item3.path" @click="clickPath(item3)">
+                <el-menu-item v-for="item3 in item2.children" :index="item3.path" :key="item3.path"
+                              @click="clickPath(item3)">
                   {{ item3.meta.title }}
                 </el-menu-item>
               </el-sub-menu>

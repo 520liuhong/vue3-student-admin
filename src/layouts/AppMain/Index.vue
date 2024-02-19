@@ -1,6 +1,6 @@
 <template>
   <div class="app-main-container">
-    <router-view class="app-main-height" :key="key" />
+    <router-view class="app-main-height" :key="key"/>
     <footer class="footer-copyright">
       Copyright
       一叶知秋 {{ fullYear }}

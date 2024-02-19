@@ -5,7 +5,7 @@
  */
 
 export const storagekey = {
-    username: 'admin',
-    userId: '000',
-    token: 'na-token'
+  username: 'admin',
+  userId: '000',
+  token: 'na-token'
 }

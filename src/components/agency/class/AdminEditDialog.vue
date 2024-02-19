@@ -15,11 +15,11 @@
           label-width="80px">
 
         <el-form-item label="账号名称" prop="name">
-          <el-input v-model="myForm.name" :disabled="type === 'edit'" />
+          <el-input v-model="myForm.name" :disabled="type === 'edit'"/>
         </el-form-item>
 
         <el-form-item label="登陆密码" prop="password" v-if="type==='add'">
-          <el-input v-model="myForm.password" />
+          <el-input v-model="myForm.password"/>
         </el-form-item>
 
         <el-form-item label="角色" prop="role">
@@ -29,7 +29,7 @@
         </el-form-item>
 
         <el-form-item label="备注信息">
-          <el-input type="textarea" show-word-limit :rows="4" resize='none' maxlength="255" v-model="myForm.remark" />
+          <el-input type="textarea" show-word-limit :rows="4" resize='none' maxlength="255" v-model="myForm.remark"/>
         </el-form-item>
       </el-form>
 

@@ -22,7 +22,9 @@ import {ref} from "vue";
 const props = defineProps({
   selectIdList: {
     type: Array,
-    default () { return [] }
+    default() {
+      return []
+    }
   }
 })
 /** data */
@@ -45,9 +47,7 @@ const search = () => {
 <script>
 export default {
   name: "mainHeader",
-  methods: {
-
-  }
+  methods: {}
 }
 </script>
 

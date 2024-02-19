@@ -24,7 +24,7 @@
           <template #default="scope">
             <div v-if="item.prop !== 'handel'">
               <span v-if="scope.row[item.prop] !== ''&&scope.row[item.prop] !== null">
-                <el-switch v-if="item.switch" v-model="scope.row.status" @change="onChange(scope.row)" />
+                <el-switch v-if="item.switch" v-model="scope.row.status" @change="onChange(scope.row)"/>
                 <span v-else>{{ scope.row[item.prop] }}</span>
               </span>
               <span v-else>-</span>

@@ -37,12 +37,14 @@ const privateKey = 'MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC1qhuD1Zg/
   'GilYHdrXrhKF6HJnhifmXPyYkUK7LLBRmbQdheINsoUp+xTS/l6ClCBJe1PC+6Xn\n' +
   'zPBzj2F4GXjb3Jy8JUXXUkHi6zIdDEcMQ8rGSQLuglEOM1NBkD+fuHQ5731xpma+\n' +
   '9KFTlG9K12ovmzogpH/8C6dF'
+
 // 加密
 export function encrypt(txt) {
   const encryptor = new JSEncrypt()
   encryptor.setPublicKey(publicKey) // 设置公钥
   return encryptor.encrypt(txt) // 对需要加密的数据进行加密
 }
+
 // 加密
 export function encrypt1(txt) {
   const encryptor = new JSEncrypt()

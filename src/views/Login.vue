@@ -6,7 +6,8 @@
       </div>
       <div class="login-content-bottom">
         <el-input class="login-input" auto-complete="new-password" v-model="loginInfo.name"></el-input>
-        <el-input class="login-input" auto-complete="new-password" type="password" v-model="loginInfo.password" @keyup.enter="login"></el-input>
+        <el-input class="login-input" auto-complete="new-password" type="password" v-model="loginInfo.password"
+                  @keyup.enter="login"></el-input>
         <el-button class="login-btn" @click="login">登录</el-button>
       </div>
     </div>
@@ -89,9 +90,9 @@ export default {
     }
 
     :deep input {
-      -webkit-text-fill-color: rgba(231,234,237, .8) !important;
+      -webkit-text-fill-color: rgba(231, 234, 237, .8) !important;
       transition: background-color 500000000000000000s ease-in-out 0s !important;
-      caret-color: #fff ;
+      caret-color: #fff;
       -webkit-text-fill-color: #8cbce6 !important;
     }
 

@@ -44,7 +44,7 @@
         </el-form-item>
 
         <el-form-item label="班级名称" prop="class">
-          <el-input v-model="classForm.class" :disabled="type==='edit'" />
+          <el-input v-model="classForm.class" :disabled="type==='edit'"/>
         </el-form-item>
 
         <el-form-item label="班主任" prop="teacherId">
