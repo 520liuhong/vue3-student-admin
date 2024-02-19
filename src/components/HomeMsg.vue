@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home-msg">
     欢迎来到学生管理系统
   </div>
 </template>

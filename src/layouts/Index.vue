@@ -61,6 +61,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background-color: var(--el-bg-color-page);
 }
 
 .main-margin {
@@ -78,9 +79,11 @@ export default {
   top: 0;
   width: 100%;
   z-index: 9;
+  background-color: var(--el-card-bg-color);
 }
 
 .na-main-content {
-  margin-top: 135px
+  margin-top: 135px;
+  background-color: var(--el-bg-color-page);
 }
 </style>

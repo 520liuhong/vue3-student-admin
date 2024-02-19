@@ -7,3 +7,16 @@
 .el-main {
   --el-main-padding: 0;
 }
+.el-table {
+  background-color: var(--el-bg-color) !important;
+}
+@import "theme/theme-light";
+.home-msg {
+  color: $--text-color-1;
+}
+.dark {
+  @import "theme/theme-dark";
+  .home-msg {
+    color: $--text-color-1;
+  }
+}

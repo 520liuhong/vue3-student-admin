@@ -32,6 +32,7 @@ export default {
   height: calc(100vh - 55px - 60px - 50px);
   margin: 20px auto;
   border-radius: 4px;
+  background-color: var(--el-bg-color-overlay);
 
   .vab-keel {
     margin: 20px;
@@ -39,17 +40,17 @@ export default {
 
   .app-main-height {
     padding: 20px;
-    background: #fff;
+    background: var(--el-bg-color);
     height: calc(100vh - 55px - 60px - 20px - 50px - 55px);
   }
 
   .footer-copyright {
     min-height: 50px;
     line-height: 50px;
-    color: rgba(0, 0, 0, 0.45);
+    //color: rgba(0, 0, 0, 0.45);
+    color: var(--el-text-color-regular);
     text-align: center;
-    border-top: 1px dashed #dcdfe6;
-    background: #fff;
+    background-color: var(--el-bg-color-page);
   }
 }
 </style>

@@ -100,7 +100,7 @@ export default {
   height: 60px;
   line-height: 60px;
   padding: 0 20px;
-  background: #ffffff;
+  background-color: var(--el-bg-color-overlay);
   border-bottom: 1px #eeeeee solid;
 }
 

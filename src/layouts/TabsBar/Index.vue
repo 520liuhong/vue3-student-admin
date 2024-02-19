@@ -27,6 +27,10 @@
           <el-dropdown-menu>
             <el-dropdown-item command="changePassword" divided>修改密码</el-dropdown-item>
             <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
+            <el-dropdown-item command="changeTheme">
+              <span>暗黑模式</span>
+              <el-switch v-model="isDark" size="large" class="mt-2" style="margin-left: 24px" inline-prompt />
+            </el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -67,6 +71,7 @@ import {useStore} from "vuex";
 import {ArrowRight} from '@element-plus/icons-vue'
 import {useRoute, useRouter} from "vue-router";
 import {storagekey} from "@/utils/constants";
+import { useDark, useToggle } from '@vueuse/core'
 
 const store = useStore()
 const route = useRoute()
@@ -75,6 +80,8 @@ let closeSideBar = ref(true) // 左侧菜单栏展开收起标识
 let dialogVisible = ref(false) // 修改密码弹出框
 let pwdStuFormRef = ref(null) // 修改密码弹窗的实例
 const username = ref(localStorage.getItem(storagekey.username)) // 用户名称
+const isDark = useDark()
+// const toggleDark = useToggle(isDark)
 
 if (!username.value) {
   router.push({path: '/'})
@@ -125,7 +132,13 @@ const handleCommand = (command) => {
     case 'logout':
       logout()
       break
+    case 'changeTheme':
+      changeTheme()
+      break
   }
+}
+const changeTheme = () => {
+  useToggle(isDark)
 }
 const closelDialog = () => {
 }
@@ -184,7 +197,8 @@ $width: 24px;
   height: 55px;
   //line-height: 60px;
   padding: 0 20px;
-  background: #ffffff;
+  //background: #ffffff;
+  background-color: var(--el-bg-color-overlay);
   border-bottom: 1px #eeeeee solid;
   display: flex;
   justify-content: space-between;
